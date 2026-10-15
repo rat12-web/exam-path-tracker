@@ -2,7 +2,7 @@ const {chromium}=require('playwright'),http=require('http'),fs=require('fs/promi
 (async()=>{
  const root=path.resolve('public'),base=(await fs.readFile('public/data/accounts.json','utf8')).replace(/^\uFEFF/,'');let records=JSON.parse(base).records.map(r=>({...r,rank:r.id==='diprom'?31:r.id==='mhesi'?350:r.id==='ddpm-policy-account'?3000:r.rank,note:r.id==='diprom'?'saved cloud note':r.note})),revision=7,forceConflict=false;
  let documents=[{id:'existing-cloud-document',recordId:'diprom',name:'existing.txt',size:5,mimeType:'text/plain',uploadedAt:'2026-10-15T00:00:00Z'}];let pageOrigin,siteOrigin;
- function reply(res,status,value,type='application/json'){res.writeHead(status,{'content-type':type});res.end(type==='application/json'?JSON.stringify(value):value)}
+ function reply(res,status,value,type='application/json'){res.writeHead(status,{'content-type':type});res.end(type==='application/json'&&typeof value!=='string'&&!Buffer.isBuffer(value)?JSON.stringify(value):value)}
  async function body(req){let s='';for await(const chunk of req)s+=chunk;return JSON.parse(s)}
  const siteServer=http.createServer(async(req,res)=>{try{const u=new URL(req.url,'http://localhost');
   if(u.pathname==='/api/records'){if(req.method==='GET')return reply(res,200,{records,revision});const b=await body(req);if(forceConflict){forceConflict=false;revision++;records=records.map(r=>r.id==='mhesi'?{...r,note:'changed in another window'}:r);return reply(res,409,{error:'conflict'})}if(b.revision!==revision)return reply(res,409,{error:'conflict'});records=b.records;revision++;return reply(res,200,{records,revision})}
@@ -28,3 +28,4 @@ const {chromium}=require('playwright'),http=require('http'),fs=require('fs/promi
  assert.deepEqual(errors,[]);console.log('Cloud sync browser checks passed: existing ranks/docs load automatically, two origins share changes, conflict retry preserves other edits, low chance last, missed exam archived, DOL added.');
  }finally{await browser.close();await new Promise(r=>siteServer.close(r));await new Promise(r=>pageServer.close(r))}
 })().catch(e=>{console.error(e);process.exitCode=1});
+
