@@ -1,0 +1,4 @@
+personal-backup.json
+node_modules/
+__pycache__/
+*.pyc

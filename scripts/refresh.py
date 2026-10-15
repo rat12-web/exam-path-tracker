@@ -1,0 +1,127 @@
+"""Read public announcement pages. Never infer appointment ranks from text."""
+from __future__ import annotations
+import hashlib,json,re,sys,concurrent.futures
+from datetime import datetime,timezone
+from html.parser import HTMLParser
+from pathlib import Path
+from urllib.request import Request,urlopen
+from urllib.parse import urljoin,urlparse,unquote
+ROOT=Path(__file__).resolve().parents[1]
+KEYWORDS=re.compile(r'ขึ้นบัญชี|เรียก|รายชื่อ|ผลการ|สอบ|บรรจุ|กำหนด|สมัคร|นักทรัพยากร|นักพัฒนา|นักวิชาการ')
+class Node:
+ def __init__(self,tag='',attrs=(),parent=None):self.tag=tag;self.attrs=dict(attrs);self.parent=parent;self.children=[]
+ def text(self):return ''.join(c if isinstance(c,str) else c.text() for c in self.children)
+class Document(HTMLParser):
+ def __init__(self):super().__init__(convert_charrefs=True);self.root=Node('root');self.stack=[self.root];self.anchors=[];self.frames=[]
+ def handle_starttag(self,tag,attrs):
+  node=Node(tag,attrs,self.stack[-1]);self.stack[-1].children.append(node)
+  if tag=='a':self.anchors.append(node)
+  if tag in ('frame','iframe'):self.frames.append(node)
+  if tag not in ('area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'):self.stack.append(node)
+ def handle_endtag(self,tag):
+  for i in range(len(self.stack)-1,0,-1):
+   if self.stack[i].tag==tag:self.stack=self.stack[:i];break
+ def handle_data(self,data):
+  if self.stack[-1].tag not in ('script','style'):self.stack[-1].children.append(data)
+def compact(s):return re.sub(r'\s+',' ',s).strip()
+def extract(body,source):
+ doc=Document();doc.feed(body);items=[];seen=set();base=source['source']
+ for a in doc.anchors:
+  href=a.attrs.get('href','').strip()
+  if not href or href.startswith(('#','javascript:','mailto:','tel:')):continue
+  absolute=urljoin(base,href);p=urlparse(absolute)
+  if p.scheme!='https' or not p.hostname:continue
+  title=compact(a.text())
+  is_doc=bool(re.search(r'\.(pdf|docx?)(?:[?#]|$)',href,re.I))
+  if is_doc or len(title)<20:
+   parent=a.parent
+   for _ in range(3):
+    if parent is None:break
+    text=compact(parent.text())
+    if 25<=len(text)<=1000:title=text;break
+    parent=parent.parent
+  if len(title)<10 or not KEYWORDS.search(title):continue
+  if not is_doc and not (re.search(r'ประกาศ|รายชื่อ|สอบ|ขึ้นบัญชี|เรียก|บรรจุ|สมัคร',title) and re.search(r'news|announce|content|view|article|2569|2026',absolute,re.I)):continue
+  if len(title)>700:continue
+  item_id=hashlib.sha256((source['id']+'|'+absolute).encode()).hexdigest()[:20]
+  if item_id in seen:continue
+  seen.add(item_id)
+  # ThaiJobJob's relative news links are often intercepted by its S3 resolver.
+  # Link to the stable portal, retaining the document filename for identification.
+  destination=base if 'thaijobjob.com' in p.hostname and is_doc else absolute
+  published='';match=re.search(r'news_(\d{1,2})-(\d{1,2})-(25\d{2})',unquote(href))
+  if match:
+   d,m,y=map(int,match.groups())
+   try:published=f'{y-543:04d}-{m:02d}-{d:02d}';datetime.fromisoformat(published)
+   except ValueError:published=''
+  items.append({'id':item_id,'agencyId':source['id'],'agency':source['agency'],'title':title[:500],'url':destination,'document':unquote(p.path.rsplit('/',1)[-1]) if is_doc else '', 'published':published,'evidence':'official-page','reviewRequired':True})
+ return items[:60]
+def read_page(url):
+ req=Request(url,headers={'User-Agent':'ExamPathTracker/1.0 (public government announcement reader)','Accept':'text/html,application/xhtml+xml'})
+ with urlopen(req,timeout=25) as response:
+  raw=response.read(3_000_001)
+  if len(raw)>3_000_000:raise ValueError('หน้าเว็บใหญ่เกินขอบเขตที่ตรวจ')
+  if 'html' not in response.headers.get('Content-Type',''):raise ValueError('ต้นทางไม่ได้ส่งหน้า HTML')
+  return raw.decode(response.headers.get_content_charset() or 'utf-8',errors='replace')
+def discover(source):
+ body=read_page(source['source']);items=extract(body,source)
+ if items:return items
+ doc=Document();doc.feed(body)
+ # Follow only an actual same-host frame advertised by the public landing page.
+ for frame in doc.frames[:1]:
+  frame_url=urljoin(source['source'],frame.attrs.get('src',''))
+  if urlparse(frame_url).hostname!=urlparse(source['source']).hostname:continue
+  landing=read_page(frame_url);landing_source={**source,'source':frame_url};landing_doc=Document();landing_doc.feed(landing)
+  links=[]
+  for anchor in landing_doc.anchors:
+   target=urljoin(frame_url,anchor.attrs.get('href',''))
+   if urlparse(target).hostname==urlparse(frame_url).hostname and re.search(r'/20\d{4,6}/index\.php',target) and target not in links:links.append(target)
+  failures=[]
+  for target in links[:4]:
+   try:items.extend(extract(read_page(target),{**source,'source':target}))
+   except Exception as error:failures.append(str(error))
+  if items:return list({item['id']:item for item in items}.values())[:100]
+ return items
+
+def fetch(source,now,previous):
+ url=source['source'];old=next((s for s in previous.get('sources',[]) if s['id']==source['id']),{})
+ status={'id':source['id'],'agency':source['agency'],'url':url,'checkedAt':now,'status':'error','lastSuccess':old.get('lastSuccess','')}
+ try:
+  items=discover(source)
+  if not items:raise ValueError('เข้าถึงหน้าเว็บได้ แต่ยังอ่านรายการประกาศไม่ได้ อาจเปลี่ยนรูปแบบหรือแสดงด้วยสคริปต์')
+  status.update(status='ok',lastSuccess=now,message=f'อ่านรายการประกาศได้ {len(items)} รายการ ยังต้องตรวจตำแหน่งและปีบัญชี')
+  return status,items
+ except Exception as error:
+  status['message']=str(error).split('\n')[0][:180]
+  return status,[]
+def refresh():
+ now=datetime.now(timezone.utc).isoformat();destination=ROOT/'public/data/announcements.json'
+ try:previous=json.loads(destination.read_text(encoding='utf-8-sig'))
+ except (OSError,ValueError):previous={'sources':[],'items':[]}
+ sources=json.loads((ROOT/'public/data/accounts.json').read_text(encoding='utf-8-sig'))['records']
+ old_items={i['id']:i for i in previous.get('items',[])};statuses=[];found=[]
+ with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
+  futures=[pool.submit(fetch,s,now,previous) for s in sources]
+  for future in futures:
+   status,items=future.result();statuses.append(status)
+   for item in items:
+    old=old_items.get(item['id'],{});item['firstSeen']=old.get('firstSeen',now);item['lastSeen']=now
+    item['changedAt']=now if old and old.get('title')!=item['title'] else old.get('changedAt','')
+    found.append(item)
+   if status['status']!='ok':print('::warning::'+status['agency']+': '+status['message'])
+   print(status['id'],status['status'],len(items))
+ found_ids={i['id'] for i in found}
+ retained=[i for i in previous.get('items',[]) if i['id'] not in found_ids]
+ all_items=found+retained
+ all_items.sort(key=lambda i:(i.get('published',''),i.get('firstSeen','')),reverse=True)
+ result={'schemaVersion':1,'checkedAt':now,'schedule':'every 6 hours','sources':statuses,'items':all_items[:400],'rankUpdates':[],'note':'Automatic announcement discovery only. Appointment ranks require human verification.'}
+ destination.parent.mkdir(parents=True,exist_ok=True);temp=destination.with_suffix('.tmp');temp.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8');temp.replace(destination)
+ ok=sum(s['status']=='ok' for s in statuses)
+ print(f'Checked {len(statuses)} sources; {ok} readable; {len(found)} announcements. No personal records modified.')
+ if summary:=__import__('os').environ.get('GITHUB_STEP_SUMMARY'):
+  with open(summary,'a',encoding='utf-8') as f:
+   f.write(f'## Announcement refresh\n\nChecked at {now}: {ok}/{len(statuses)} sources readable; {len(found)} announcements.\n\nNo appointment ranks were inferred. Failed sources are shown on the website.\n')
+ return result
+if __name__=='__main__':refresh()
+
+

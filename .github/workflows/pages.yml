@@ -1,0 +1,64 @@
+name: Publish tracker and check announcements
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test persistence and forecast rules
+        run: node --test tests/*.test.cjs
+      - name: Test announcement parsing
+        run: python -m unittest discover -s tests -p 'test_*.py'
+      - uses: actions/cache@v4
+        with:
+          path: public/data/announcements.json
+          key: announcements-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: announcements-v1-
+      - name: Check official announcement pages
+        timeout-minutes: 5
+        run: python scripts/refresh.py
+      - name: Install browser test runtime
+        run: npm install --no-save --ignore-scripts playwright@1.62.1
+      - name: Install test browser
+        run: npx playwright install --with-deps chromium
+      - name: Test browser persistence, documents, and mobile layout
+        run: node scripts/browser-check.cjs
+      - name: Save browser verification images
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-verification
+          path: reports
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+

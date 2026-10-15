@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "records": [
+    {
+      "id": "diprom",
+      "agency": "กรมส่งเสริมอุตสาหกรรม",
+      "position": "นักวิชาการอุตสาหกรรมปฏิบัติการ",
+      "status": "ขึ้นบัญชีแล้ว",
+      "rank": null,
+      "total": 161,
+      "initial": 11,
+      "start": "2026-09-09",
+      "expiry": "2028-09-08",
+      "source": "https://dip.thaijobjob.com/2026062/index.php",
+      "logo": "https://www.dip.go.th/files/site/logo-2-68259b63ab6c9552606976.png",
+      "called": 11,
+      "calledAt": "2026-10-05",
+      "calledBasis": "ประกาศทางการ",
+      "note": "",
+      "events": [],
+      "history": [],
+      "sources": [
+        {
+          "title": "ประกาศขึ้นบัญชีและเรียกบรรจุ กรมส่งเสริมอุตสาหกรรม",
+          "url": "https://dip.thaijobjob.com/2026062/index.php",
+          "note": "ขึ้นบัญชี 9 ก.ย. 2569 จำนวน 161 ราย เรียก 1–11 รายงานตัว 16 ก.ย. บรรจุ 21 ก.ย.; ข้อ 2.5 อนุญาตขอใช้บัญชี แต่ยังไม่พบการยืมจริง"
+        },
+        {
+          "title": "บัญชีเดิม 3 ต.ค. 2566",
+          "url": "https://info.dip.go.th/uploadcontent/maew_info/(2.5).pdf",
+          "note": "นักวิชาการอุตสาหกรรมขึ้นบัญชี 105 ราย เป็นจำนวนผู้ขึ้นบัญชี ไม่ใช่ลำดับสุดท้ายที่เรียก"
+        }
+      ],
+      "researchSummary": "ยืนยันบัญชีปัจจุบันและขนาดบัญชีเก่าได้ ยังไม่พบลำดับสิ้นสุดของบัญชีเก่า"
+    },
+    {
+      "id": "msdhs",
+      "agency": "สำนักงานปลัดกระทรวงการพัฒนาสังคมและความมั่นคงของมนุษย์",
+      "position": "นักพัฒนาสังคมปฏิบัติการ",
+      "status": "ขึ้นบัญชีแล้ว",
+      "rank": null,
+      "total": 2147,
+      "initial": 10,
+      "start": "2026-01-30",
+      "expiry": "2028-01-29",
+      "source": "https://m-society.thaijobjob.com/20251001/index.php",
+      "logo": "https://pathumthani.dop.go.th/images/laws/logo.png",
+      "called": 60,
+      "calledAt": "2026-10-05",
+      "calledBasis": "ข้อมูลที่ผู้ใช้แจ้ง ณ 5 ต.ค. 2569",
+      "note": "",
+      "events": [],
+      "history": [],
+      "sources": [
+        {
+          "title": "ประกาศขึ้นบัญชี สป.พม. 30 ม.ค. 2569",
+          "url": "https://m-society.thaijobjob.com/20251001/index.php",
+          "note": "บัญชีนักพัฒนาสังคมปฏิบัติการระบุ 2,147 ราย แก้ยอดเดิม 2,174 ที่สลับหลัก; ลำดับล่าสุด 57–60 ยังอ้างอิงข้อมูลผู้ใช้ ไม่ใช่ประกาศที่ตรวจยืนยันใหม่"
+        },
+        {
+          "title": "รายงานการเคลื่อนไหวบัญชี ณ 25 ก.ค. 2562",
+          "url": "https://hrm.m-society.go.th/wp-content/uploads/2021/03/รายงานการเคลื่อนไหวบัญชี-ขรก..pdf",
+          "note": "นักพัฒนาสังคมปฏิบัติการ (ปริญญาตรี): ขึ้นบัญชี 288 ราย เรียกบรรจุ 122 ราย สละสิทธิ 24 ราย เหลือ 166 ราย; บัญชี 18 เม.ย. 2561–17 เม.ย. 2563 สังเกตประมาณ 15 เดือน ตัวเลข 122 เป็นจำนวนราย ไม่ใช่ลำดับสุดท้าย จึงไม่ใช้เป็นอัตราขยับลำดับ"
+        }
+      ],
+      "researchSummary": "พบข้อมูลบัญชีเก่า 2561 ของตำแหน่งตรงกัน แต่เป็นยอดจำนวนรายระหว่างอายุบัญชี ไม่ใช่ยอดลำดับสิ้นสุด จึงใช้เป็นบริบทเท่านั้น"
+    },
+    {
+      "id": "nia",
+      "agency": "สำนักข่าวกรองแห่งชาติ",
+      "position": "นักการข่าวปฏิบัติการ",
+      "status": "รอผลสอบ",
+      "rank": null,
+      "total": null,
+      "initial": null,
+      "start": "",
+      "expiry": "",
+      "source": "https://nia.thaijobjob.com/",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Emblem_of_the_National_Intelligence_Agency.svg/1280px-Emblem_of_the_National_Intelligence_Agency.svg.png",
+      "called": null,
+      "calledAt": "",
+      "calledBasis": "ประกาศทางการ",
+      "note": "",
+      "events": [],
+      "history": [],
+      "sources": [],
+      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ"
+    },
+    {
+      "id": "mhesi",
+      "agency": "สำนักงานปลัดกระทรวงการอุดมศึกษา วิทยาศาสตร์ วิจัยและนวัตกรรม",
+      "position": "นักทรัพยากรบุคคลปฏิบัติการ",
+      "status": "ขึ้นบัญชีแล้ว",
+      "rank": null,
+      "total": 363,
+      "initial": 5,
+      "start": "2026-09-18",
+      "expiry": "2028-09-17",
+      "source": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial",
+      "logo": "https://sru.ac.th/wp-content/uploads/2021/08/Artwork_Logo_MHESI_final_27_04_2564_-01-800px.png",
+      "called": 15,
+      "calledAt": "2026-10-05",
+      "calledBasis": "ข้อมูลที่ผู้ใช้แจ้ง ณ 5 ต.ค. 2569",
+      "note": "",
+      "events": [],
+      "history": [],
+      "sources": [
+        {
+          "title": "ประกาศขึ้นบัญชี สป.อว. 18 ก.ย. 2569 และบัญชีแนบท้ายเรียกบรรจุ",
+          "url": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial/15534-2026-09-18-07-33-50",
+          "note": "นักทรัพยากรบุคคลปฏิบัติการขึ้นบัญชี 363 ราย; ภาคผนวกเรียก 1–5 รายงานตัว 24 ก.ย. และกำหนดบรรจุ 1 ต.ค. 2569 แก้ข้อมูลเดิมที่เรียกถึง 4; ข้อ 2.5 รองรับการขอใช้บัญชี แต่ยังไม่ใช่หลักฐานว่ามีการยืมจริง"
+        },
+        {
+          "title": "รายงานงานบุคคล สป.อว. 2565",
+          "url": "https://ops.mhesi.go.th/images/HRST/Performance_Report_HR_2565/Performance_Report_HR_2565.pdf",
+          "note": "พบการขอใช้บัญชีจากหน่วยงานอื่นในอดีตและการสละสิทธิ เป็นการยืมเข้าของ สป.อว. ไม่ใช่หลักฐานว่าบัญชีนักทรัพยากรบุคคล 2569 ถูกยืมออก"
+        }
+      ],
+      "researchSummary": "ยืนยันบัญชีปัจจุบันและรอบแรกถึงลำดับ 5 แล้ว ยังไม่พบลำดับสิ้นสุดบัญชีเก่าที่เทียบตรงกัน"
+    },
+    {
+      "id": "doe",
+      "agency": "กรมการจัดหางาน",
+      "position": "นักจัดการงานทั่วไปปฏิบัติการ",
+      "status": "รอผลสอบ",
+      "rank": null,
+      "total": null,
+      "initial": null,
+      "start": "",
+      "expiry": "",
+      "source": "https://doe.thaijobjob.com/",
+      "logo": "https://sdfund.dsd.go.th/Uploads/mas_recommend_link/23/cover_photo/doe_th_logo_RGB_30c962b2-5eb9-475b-970b-9df51be3420d.png?uu_id=ISH68",
+      "called": null,
+      "calledAt": "",
+      "calledBasis": "ประกาศทางการ",
+      "note": "",
+      "events": [],
+      "history": [],
+      "sources": [],
+      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ"
+    },
+    {
+      "id": "moj",
+      "agency": "สำนักงานปลัดกระทรวงยุติธรรม",
+      "position": "นักวิชาการยุติธรรมปฏิบัติการ",
+      "status": "รอผลสอบ",
+      "rank": null,
+      "total": null,
+      "initial": null,
+      "start": "",
+      "expiry": "",
+      "source": "https://moj.thaijobjob.com/",
+      "logo": "https://apig.law.go.th/dga-backoffice-api/dga-storage/uploads/2024-03-25-10%3A34%3A21_logomoj.png",
+      "called": null,
+      "calledAt": "",
+      "calledBasis": "ประกาศทางการ",
+      "note": "",
+      "events": [],
+      "history": [],
+      "sources": [],
+      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ"
+    },
+    {
+      "id": "opsmoac-policy-2569",
+      "agency": "สำนักงานปลัดกระทรวงเกษตรและสหกรณ์",
+      "position": "นักวิเคราะห์นโยบายและแผนปฏิบัติการ",
+      "status": "รอสอบภาค ข",
+      "rank": null,
+      "total": null,
+      "initial": null,
+      "start": "",
+      "expiry": "",
+      "source": "https://opsmoac.thaijobjob.com/202608/index.php",
+      "logo": "https://orgweb.ldd.go.th/sources/img/part_link/LINK_IMG_10002_65fa5f2da4558.png",
+      "called": null,
+      "calledAt": "",
+      "calledBasis": "ประกาศทางการ",
+      "note": "",
+      "events": [],
+      "history": [],
+      "sources": [],
+      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ"
+    },
+    {
+      "id": "ombudsman-academic-2569",
+      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
+      "position": "นักวิชาการปฏิบัติการ",
+      "status": "รอสอบภาค ข",
+      "rank": null,
+      "total": null,
+      "initial": null,
+      "start": "",
+      "expiry": "",
+      "source": "https://ombudsman.thaijobjob.com/202606/index.php",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Emblem_of_the_Office_of_the_Ombudsman.svg/500px-Emblem_of_the_Office_of_the_Ombudsman.svg.png",
+      "called": null,
+      "calledAt": "",
+      "calledBasis": "ประกาศทางการ",
+      "note": "",
+      "events": [],
+      "history": [],
+      "sources": [],
+      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ"
+    },
+    {
+      "id": "ddpm-policy-account",
+      "agency": "กรมป้องกันและบรรเทาสาธารณภัย",
+      "position": "นักวิเคราะห์นโยบายและแผนปฏิบัติการ",
+      "status": "ขึ้นบัญชีแล้ว",
+      "rank": null,
+      "total": 3983,
+      "initial": 58,
+      "start": "2026-08-07",
+      "expiry": "2028-08-06",
+      "source": "https://ddpm.thaijobjob.com/202605/index.php",
+      "logo": "assets/ddpm.png",
+      "called": 75,
+      "calledAt": "2026-10-05",
+      "calledBasis": "ข้อมูลที่ผู้ใช้แจ้ง ณ 5 ต.ค. 2569",
+      "note": "",
+      "events": [],
+      "history": [],
+      "sources": [
+        {
+          "title": "ประกาศขึ้นบัญชีและเรียกบรรจุ ปภ.",
+          "url": "https://ddpm.thaijobjob.com/202605/index.php",
+          "note": "ประกาศลงนาม 7 ส.ค. 2569 จำนวน 3,983 ราย เรียก 1–58 รายงานตัว 17 ส.ค. บรรจุ 31 ส.ค.; บัญชีไม่เกิน 2 ปีและอาจยกเลิกก่อนเมื่อมีบัญชีใหม่ ข้อ 2.5 อนุญาตขอใช้บัญชี แต่ยังไม่พบการยืมจริง"
+        }
+      ],
+      "researchSummary": "ยืนยันวันขึ้นบัญชีและรอบแรกได้ ยังไม่พบลำดับสิ้นสุดบัญชีเก่าที่เทียบตรงกัน"
+    }
+  ]
+}
