@@ -5,7 +5,8 @@ from datetime import datetime,timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.request import Request,urlopen
-from urllib.parse import urljoin,urlparse,unquote
+from urllib.parse import urljoin,urlparse,unquote,urlencode
+import xml.etree.ElementTree as ET
 ROOT=Path(__file__).resolve().parents[1]
 KEYWORDS=re.compile(r'ขึ้นบัญชี|เรียก|รายชื่อ|ผลการ|สอบ|บรรจุ|กำหนด|สมัคร|นักทรัพยากร|นักพัฒนา|นักวิชาการ')
 class Node:
@@ -41,6 +42,7 @@ def extract(body,source):
     if 25<=len(text)<=1000:title=text;break
     parent=parent.parent
   if len(title)<10 or not KEYWORDS.search(title):continue
+  if not is_doc and (re.search(r'category|table-list|list-label|module/view',absolute,re.I) or 'ติดต่อสอบถาม' in title or 'เกี่ยวกับกรม' in title):continue
   if not is_doc and not (re.search(r'ประกาศ|รายชื่อ|สอบ|ขึ้นบัญชี|เรียก|บรรจุ|สมัคร',title) and re.search(r'news|announce|content|view|article|2569|2026',absolute,re.I)):continue
   if len(title)>700:continue
   item_id=hashlib.sha256((source['id']+'|'+absolute).encode()).hexdigest()[:20]
@@ -83,6 +85,27 @@ def discover(source):
   if items:return list({item['id']:item for item in items}.values())[:100]
  return items
 
+OFFICIAL_DOMAINS={'diprom':'dip.go.th','msdhs':'hrm.m-society.go.th','nia':'nia.go.th','doe':'doe.go.th','moj':'moj.go.th','opsmoac-policy-2569':'opsmoac.go.th','ombudsman-academic-2569':'ombudsman.go.th','ddpm-policy-account':'disaster.go.th'}
+def index_leads(source):
+ domain=OFFICIAL_DOMAINS.get(source['id'])
+ if not domain:return []
+ position=source['position'].replace('ปฏิบัติการ','').replace('ปฏิบัติงาน','')
+ query=f'site:{domain} "{position}" ("ขึ้นบัญชี" OR "รายชื่อ" OR "เรียก" OR "สอบ")'
+ url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss'})
+ req=Request(url,headers={'User-Agent':'ExamPathTracker/1.0 (public government search-index leads)'})
+ with urlopen(req,timeout=18) as response:raw=response.read(2_000_001)
+ if len(raw)>2_000_000:raise ValueError('ผลค้นใหญ่เกินขอบเขต')
+ doc=ET.fromstring(raw);items=[]
+ for item in doc.findall('.//item')[:30]:
+  title=compact(item.findtext('title') or '');link=(item.findtext('link') or '').strip();host=urlparse(link).hostname or ''
+  description=compact(item.findtext('description') or '')
+  if urlparse(link).scheme!='https' or not (host==domain or host.endswith('.'+domain)):continue
+  if position not in title+' '+description:continue
+  if not KEYWORDS.search(title+' '+description):continue
+  item_id=hashlib.sha256((source['id']+'|'+link).encode()).hexdigest()[:20]
+  items.append({'id':item_id,'agencyId':source['id'],'agency':source['agency'],'title':title[:500],'url':link,'document':'','published':'','evidence':'search-index-lead','reviewRequired':True})
+ return items
+
 def fetch(source,now,previous):
  url=source['source'];old=next((s for s in previous.get('sources',[]) if s['id']==source['id']),{})
  status={'id':source['id'],'agency':source['agency'],'url':url,'checkedAt':now,'status':'error','lastSuccess':old.get('lastSuccess','')}
@@ -93,6 +116,12 @@ def fetch(source,now,previous):
   return status,items
  except Exception as error:
   status['message']=str(error).split('\n')[0][:180]
+  try:
+   leads=index_leads(source)
+   if leads:
+    status.update(status='index',message='ต้นทางเข้าถึงไม่ได้ พบผลค้นสำรอง '+str(len(leads))+' รายการ ต้องเปิดต้นฉบับตรวจอีกครั้ง; '+status['message'],indexCheckedAt=now)
+    return status,leads
+  except Exception as index_error:status['message']+='; ดัชนีสำรอง: '+str(index_error)[:80]
   return status,[]
 def refresh():
  now=datetime.now(timezone.utc).isoformat();destination=ROOT/'public/data/announcements.json'
