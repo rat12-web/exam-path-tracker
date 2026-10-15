@@ -48,7 +48,7 @@ function mergeRecords(cloud,local,pending=[],defaults=[]){
 function migrate(records,defaults){
  const map=new Map(records.map(r=>[r.id,r]));
  for(const b of defaults){const r=map.get(b.id);if(!r){map.set(b.id,cleanRecord({...b}));continue}
- const copy={...b,...r,sources:uniqueRows(r.sources,b.sources)};
+ const copy={...b,...r,source:r.source||b.source||'',logo:r.logo||b.logo||'',sources:uniqueRows(r.sources,b.sources)};
  if(b.researchVersion&&r.researchVersion!==b.researchVersion){
   copy.dates={...(r.dates||{}),...(b.dates||{})};copy.rounds=uniqueRows(r.rounds,b.rounds);copy.researchVersion=b.researchVersion;
   copy.sources=uniqueRows(r.sources,b.sources);copy.researchSummary=b.researchSummary||r.researchSummary;

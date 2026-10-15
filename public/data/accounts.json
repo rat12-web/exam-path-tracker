@@ -171,7 +171,11 @@
       "events": [],
       "history": [],
       "sources": [],
-      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ"
+      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ",
+      "monitorSources": [
+        "https://nia.thaijobjob.com/202604/index.php",
+        "https://nia.thaijobjob.com/202603/index.php"
+      ]
     },
     {
       "id": "mhesi",
@@ -260,7 +264,13 @@
       "events": [],
       "history": [],
       "sources": [],
-      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ"
+      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ",
+      "monitorSources": [
+        "https://doe.thaijobjob.com/2026053/index.php",
+        "https://doe.thaijobjob.com/202605/index.php",
+        "https://doe.thaijobjob.com/202602/index.php",
+        "https://doe.thaijobjob.com/2025103/index.php"
+      ]
     },
     {
       "id": "moj",
@@ -281,7 +291,13 @@
       "events": [],
       "history": [],
       "sources": [],
-      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ"
+      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ",
+      "monitorSources": [
+        "https://moj.thaijobjob.com/202605/index.php",
+        "https://moj.thaijobjob.com/202603/index.php",
+        "https://moj.thaijobjob.com/202511/index.php",
+        "https://moj.thaijobjob.com/202503/index.php"
+      ]
     },
     {
       "id": "opsmoac-policy-2569",
@@ -435,7 +451,13 @@
       "rounds": [],
       "researchSummary": "ข่าวทางการกรมที่ดินระบุเปิดรับสมัคร 2–29 ต.ค. 2569 นักวิชาการคอมพิวเตอร์ปฏิบัติการ 3 อัตรา จากรวม 26 อัตรา 6 ตำแหน่ง ยังไม่ยืนยันวันสอบหรือวันบรรจุ",
       "researchVersion": "2026-10-15-v3",
-      "vacancies": 3
+      "vacancies": 3,
+      "monitorSources": [
+        "https://dol.thaijobjob.com/202610/index.php",
+        "https://dol.thaijobjob.com/2025121/index.php",
+        "https://dol.thaijobjob.com/202512/index.php",
+        "https://dol.thaijobjob.com/202504/index.php"
+      ]
     }
   ]
 }

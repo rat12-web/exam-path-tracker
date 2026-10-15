@@ -1,11 +1,13 @@
 /* UI controller: retain local edits, merge cloud revisions, and keep document ownership in the Site. */
-let cloudWorking=false,cloudLast='',cloudError='',cloudSnapshot=new Map(),cloudStarted=false;
+let cloudWorking=false,cloudLast='',cloudError='',cloudSnapshot=new Map(),cloudStarted=false,cloudConnecting=false;
 function markPendingChanges(){const pending=new Set(state.pendingIds||[]);for(const r of state.records)if(cloudSnapshot.get(r.id)!==JSON.stringify(r))pending.add(r.id);state.pendingIds=[...pending];cloudSnapshot=new Map(state.records.map(r=>[r.id,JSON.stringify(r)]));setTimeout(()=>syncCloud(),20)}
 function persistCloudCache(){try{localStorage.setItem(KEY,JSON.stringify(state));cloudSnapshot=new Map(state.records.map(r=>[r.id,JSON.stringify(r)]))}catch{storageOK=false}}
 function mountCloudBar(){
  const connected=ExamCloud.connected,hasData=state.records.some(r=>r.rank);
  const box=document.createElement('div');box.className='notice cloud-sync '+(cloudError?'warn':'');box.id='cloud-status';
  box.innerHTML=`<div><b>${connected?'☁ ใช้ข้อมูลชุดเดียวกับ ChatGPT Site':'☁ เชื่อมข้อมูลที่กรอกไว้แล้ว'}</b><p>${connected?`ซิงก์อัตโนมัติทุก 45 วินาที · ${cloudWorking?'กำลังตรวจข้อมูล…':cloudLast?'ล่าสุด '+stamp(cloudLast):'รอตรวจข้อมูล'}${(state.pendingIds||[]).length?' · มีรายการรอบันทึก':''}`:hasData?'ข้อมูลในเครื่องยังอยู่ กดเชื่อมเพื่อรวมกับข้อมูลเดิมบน ChatGPT Site':'กดเชื่อมเพื่อดึงลำดับ ประวัติ และเอกสารเดิม โดยไม่ต้องนำเข้าไฟล์'}${cloudError?'<br>'+esc(cloudError):''}</p></div><button class="btn primary" data-connect>${connected?'↻ ซิงก์ตอนนี้':'เชื่อมข้อมูลเดิม'}</button>`;
+ if(cloudConnecting){box.querySelector('p').textContent='กำลังรอหน้าต่างเชื่อมข้อมูล · เข้าสู่ระบบ ChatGPT Site แล้วเปิดหน้าต่างนั้นค้างไว้';box.querySelector('button').textContent='กำลังเชื่อม…'}
+ if(!connected){const help=document.createElement('p');help.className='news-meta';help.innerHTML='หากเบราว์เซอร์ไม่เปิดหน้าต่างหรือบล็อกการเชื่อมข้ามเว็บ ให้ '+link(ExamCloud.site+'/tracker/','เปิดข้อมูลออนไลน์ใน ChatGPT Site')+' ซึ่งใช้โค้ดและประกาศชุดเดียวกับหน้านี้';box.append(help)}
  $('#main').prepend(box);
  const header=document.querySelector('header .tag');if(header)header.textContent=ExamCloud.direct?'ChatGPT Site · ข้อมูลออนไลน์':connected?'GitHub Pages · เชื่อมแล้ว':'GitHub Pages';
 }
@@ -33,7 +35,7 @@ async function startCloud(){
  cloudSnapshot=new Map(state.records.map(r=>[r.id,JSON.stringify(r)]));cloudLast=state.cloudAt||'';
  if(cloudStarted)return;cloudStarted=true;
  window.addEventListener('exam-cloud-state',()=>{if(state.records.length)render()});
- document.addEventListener('click',async e=>{if(!e.target.closest('[data-connect]'))return;try{await ExamCloud.connect(true);await syncCloud();await syncPendingDocuments();toast(cloudError||'เชื่อมข้อมูลเดิมและรวมข้อมูลแล้ว')}catch(error){cloudError=error.message;render()}});
+ document.addEventListener('click',async e=>{if(!e.target.closest('[data-connect]')||cloudConnecting)return;cloudConnecting=true;cloudError='';try{const connecting=ExamCloud.connect(true);render();await connecting;await syncCloud();await syncPendingDocuments();toast(cloudError||'เชื่อมข้อมูลเดิมและรวมข้อมูลแล้ว')}catch(error){cloudError=error.message}finally{cloudConnecting=false;render()}});
  try{await ExamCloud.connect(false);await syncCloud();await syncPendingDocuments()}catch{render()}
  setInterval(()=>{if(ExamCloud.connected)syncCloud()},45000);
 }

@@ -61,6 +61,7 @@ def extract(body,source):
 def read_page(url):
  req=Request(url,headers={'User-Agent':'ExamPathTracker/2.0 (public government announcement reader)','Accept':'text/html,application/xhtml+xml'})
  try:
+  if os.environ.get('SITE_MONITOR_ACCESS') and urlparse(url).hostname.endswith('.thaijobjob.com'):raise ValueError('Use verified Site network for this source')
   with urlopen(req,timeout=12) as response:
    raw=response.read(3_000_001)
    if len(raw)>3_000_000:raise ValueError('หน้าเว็บใหญ่เกินขอบเขตที่ตรวจ')
@@ -75,6 +76,12 @@ def read_page(url):
   if result.get('url')!=url or not isinstance(result.get('html'),str):raise ValueError('ต้นทางสำรองส่งข้อมูลไม่ตรง URL')
   return result['html']
 def discover(source):
+ if source.get('monitorSources'):
+  items=[]
+  for target in source['monitorSources']:
+   if urlparse(target).hostname!=urlparse(source['source']).hostname:raise ValueError('แหล่งติดตามต้องเป็นหน่วยงานเดียวกัน')
+   items.extend(extract(read_page(target),{**source,'source':target}))
+  return list({item['id']:item for item in items}.values())[:100]
  body=read_page(source['source']);items=extract(body,source)
  if items:return items
  doc=Document();doc.feed(body)
