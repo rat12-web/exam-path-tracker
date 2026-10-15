@@ -34,13 +34,18 @@ jobs:
           restore-keys: announcements-v1-
       - name: Check official announcement pages
         timeout-minutes: 5
+        env:
+          SITE_MONITOR_URL: https://exam-path-personal-2026-r.rat-creative1.chatgpt.site/api/official-source
+          SITE_MONITOR_ACCESS: ${{ secrets.SITE_MONITOR_ACCESS }}
         run: python scripts/refresh.py
       - name: Install browser test runtime
         run: npm install --no-save --ignore-scripts playwright@1.62.1
       - name: Install test browser
         run: npx playwright install --with-deps chromium
       - name: Test browser persistence, documents, and mobile layout
-        run: node scripts/browser-check.cjs
+        run: |
+          node scripts/browser-check.cjs
+          node scripts/sync-browser-check.cjs
       - name: Save browser verification images
         if: always()
         uses: actions/upload-artifact@v4
@@ -61,4 +66,6 @@ jobs:
       - name: Publish GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+
 

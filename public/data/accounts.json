@@ -31,7 +31,43 @@
           "note": "นักวิชาการอุตสาหกรรมขึ้นบัญชี 105 ราย เป็นจำนวนผู้ขึ้นบัญชี ไม่ใช่ลำดับสุดท้ายที่เรียก"
         }
       ],
-      "researchSummary": "ยืนยันบัญชีปัจจุบันและขนาดบัญชีเก่าได้ ยังไม่พบลำดับสิ้นสุดของบัญชีเก่า"
+      "researchSummary": "ยืนยันบัญชีปัจจุบันและขนาดบัญชีเก่าได้ ยังไม่พบลำดับสิ้นสุดของบัญชีเก่า",
+      "dates": {
+        "announcement": {
+          "date": "2026-09-09",
+          "source": "https://dip.thaijobjob.com/2026062/index.php",
+          "basis": "ประกาศทางการ"
+        },
+        "firstCall": {
+          "date": "2026-09-09",
+          "source": "https://dip.thaijobjob.com/2026062/index.php",
+          "basis": "ประกาศทางการ"
+        },
+        "report": {
+          "date": "2026-09-16",
+          "source": "https://dip.thaijobjob.com/2026062/index.php",
+          "basis": "ประกาศทางการ"
+        },
+        "appointment": {
+          "date": "2026-09-21",
+          "source": "https://dip.thaijobjob.com/2026062/index.php",
+          "basis": "ประกาศทางการ"
+        }
+      },
+      "rounds": [
+        {
+          "id": "diprom-first-official",
+          "number": 1,
+          "date": "2026-09-09",
+          "from": 1,
+          "to": 11,
+          "called": 11,
+          "appointed": null,
+          "source": "https://dip.thaijobjob.com/2026062/index.php",
+          "basis": "ประกาศทางการ"
+        }
+      ],
+      "researchVersion": "2026-10-15-v2"
     },
     {
       "id": "msdhs",
@@ -63,7 +99,15 @@
           "note": "นักพัฒนาสังคมปฏิบัติการ (ปริญญาตรี): ขึ้นบัญชี 288 ราย เรียกบรรจุ 122 ราย สละสิทธิ 24 ราย เหลือ 166 ราย; บัญชี 18 เม.ย. 2561–17 เม.ย. 2563 สังเกตประมาณ 15 เดือน ตัวเลข 122 เป็นจำนวนราย ไม่ใช่ลำดับสุดท้าย จึงไม่ใช้เป็นอัตราขยับลำดับ"
         }
       ],
-      "researchSummary": "พบข้อมูลบัญชีเก่า 2561 ของตำแหน่งตรงกัน แต่เป็นยอดจำนวนรายระหว่างอายุบัญชี ไม่ใช่ยอดลำดับสิ้นสุด จึงใช้เป็นบริบทเท่านั้น"
+      "researchSummary": "พบข้อมูลบัญชีเก่า 2561 ของตำแหน่งตรงกัน แต่เป็นยอดจำนวนรายระหว่างอายุบัญชี ไม่ใช่ยอดลำดับสิ้นสุด จึงใช้เป็นบริบทเท่านั้น",
+      "dates": {
+        "announcement": {
+          "date": "2026-01-30",
+          "source": "https://m-society.thaijobjob.com/20251001/index.php",
+          "basis": "ประกาศทางการ"
+        }
+      },
+      "researchVersion": "2026-10-15-v2"
     },
     {
       "id": "nia",
@@ -116,7 +160,43 @@
           "note": "พบการขอใช้บัญชีจากหน่วยงานอื่นในอดีตและการสละสิทธิ เป็นการยืมเข้าของ สป.อว. ไม่ใช่หลักฐานว่าบัญชีนักทรัพยากรบุคคล 2569 ถูกยืมออก"
         }
       ],
-      "researchSummary": "ยืนยันบัญชีปัจจุบันและรอบแรกถึงลำดับ 5 แล้ว ยังไม่พบลำดับสิ้นสุดบัญชีเก่าที่เทียบตรงกัน"
+      "researchSummary": "ยืนยันบัญชีปัจจุบันและรอบแรกถึงลำดับ 5 แล้ว ยังไม่พบลำดับสิ้นสุดบัญชีเก่าที่เทียบตรงกัน",
+      "dates": {
+        "announcement": {
+          "date": "2026-09-18",
+          "source": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial/15534-2026-09-18-07-33-50",
+          "basis": "ประกาศทางการ"
+        },
+        "firstCall": {
+          "date": "2026-09-18",
+          "source": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial/15534-2026-09-18-07-33-50",
+          "basis": "ประกาศทางการ"
+        },
+        "report": {
+          "date": "2026-09-24",
+          "source": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial/15534-2026-09-18-07-33-50",
+          "basis": "ประกาศทางการ"
+        },
+        "appointment": {
+          "date": "2026-10-01",
+          "source": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial/15534-2026-09-18-07-33-50",
+          "basis": "ประกาศทางการ"
+        }
+      },
+      "rounds": [
+        {
+          "id": "mhesi-first-official",
+          "number": 1,
+          "date": "2026-09-18",
+          "from": 1,
+          "to": 5,
+          "called": 5,
+          "appointed": null,
+          "source": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial/15534-2026-09-18-07-33-50",
+          "basis": "ประกาศทางการ"
+        }
+      ],
+      "researchVersion": "2026-10-15-v2"
     },
     {
       "id": "doe",
@@ -164,7 +244,7 @@
       "id": "opsmoac-policy-2569",
       "agency": "สำนักงานปลัดกระทรวงเกษตรและสหกรณ์",
       "position": "นักวิเคราะห์นโยบายและแผนปฏิบัติการ",
-      "status": "รอสอบภาค ข",
+      "status": "ถอนตัว",
       "rank": null,
       "total": null,
       "initial": null,
@@ -179,7 +259,9 @@
       "events": [],
       "history": [],
       "sources": [],
-      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ"
+      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ",
+      "archived": true,
+      "archiveReason": "ไม่ได้ไปสอบ · นำออกตามคำขอ 15 ต.ค. 2569"
     },
     {
       "id": "ombudsman-academic-2569",
@@ -227,7 +309,90 @@
           "note": "ประกาศลงนาม 7 ส.ค. 2569 จำนวน 3,983 ราย เรียก 1–58 รายงานตัว 17 ส.ค. บรรจุ 31 ส.ค.; บัญชีไม่เกิน 2 ปีและอาจยกเลิกก่อนเมื่อมีบัญชีใหม่ ข้อ 2.5 อนุญาตขอใช้บัญชี แต่ยังไม่พบการยืมจริง"
         }
       ],
-      "researchSummary": "ยืนยันวันขึ้นบัญชีและรอบแรกได้ ยังไม่พบลำดับสิ้นสุดบัญชีเก่าที่เทียบตรงกัน"
+      "researchSummary": "ยืนยันวันขึ้นบัญชีและรอบแรกได้ ยังไม่พบลำดับสิ้นสุดบัญชีเก่าที่เทียบตรงกัน",
+      "dates": {
+        "announcement": {
+          "date": "2026-08-07",
+          "source": "https://ddpm.thaijobjob.com/202605/index.php",
+          "basis": "ประกาศทางการ"
+        },
+        "firstCall": {
+          "date": "2026-08-07",
+          "source": "https://ddpm.thaijobjob.com/202605/index.php",
+          "basis": "ประกาศทางการ"
+        },
+        "report": {
+          "date": "2026-08-17",
+          "source": "https://ddpm.thaijobjob.com/202605/index.php",
+          "basis": "ประกาศทางการ"
+        },
+        "appointment": {
+          "date": "2026-08-31",
+          "source": "https://ddpm.thaijobjob.com/202605/index.php",
+          "basis": "ประกาศทางการ"
+        }
+      },
+      "rounds": [
+        {
+          "id": "ddpm-policy-account-first-official",
+          "number": 1,
+          "date": "2026-08-07",
+          "from": 1,
+          "to": 58,
+          "called": 58,
+          "appointed": null,
+          "source": "https://ddpm.thaijobjob.com/202605/index.php",
+          "basis": "ประกาศทางการ"
+        }
+      ],
+      "researchVersion": "2026-10-15-v2"
+    },
+    {
+      "id": "dol-computer-2569",
+      "agency": "กรมที่ดิน",
+      "position": "นักวิชาการคอมพิวเตอร์ปฏิบัติการ",
+      "status": "รอสมัคร",
+      "rank": null,
+      "total": null,
+      "initial": null,
+      "start": "",
+      "expiry": "",
+      "source": "https://dol.thaijobjob.com/",
+      "logo": "",
+      "called": null,
+      "calledAt": "",
+      "calledBasis": "",
+      "note": "เพิ่มตามคำขอ รอสมัคร ต้องตรวจวันรับสมัครจากประกาศทางการ",
+      "events": [],
+      "history": [],
+      "sources": [
+        {
+          "title": "กรมที่ดิน รับสมัครข้าราชการ 26 อัตรา (ข่าวทางการ 22 ก.ย. 2569)",
+          "url": "https://www.dol.go.th/trat/cate-1769393600/news-1790062263/",
+          "note": "นักวิชาการคอมพิวเตอร์ปฏิบัติการ 3 อัตรา เปิดรับสมัคร 2–29 ต.ค. 2569 เป็นอัตราที่เปิดรับ ไม่ใช่จำนวนผู้ขึ้นบัญชีหรือจำนวนบรรจุจริง"
+        }
+      ],
+      "dates": {
+        "webPublication": {
+          "date": "2026-09-22",
+          "source": "https://www.dol.go.th/trat/cate-1769393600/news-1790062263/",
+          "basis": "ข่าวทางการกรมที่ดิน"
+        },
+        "applicationStart": {
+          "date": "2026-10-02",
+          "source": "https://www.dol.go.th/trat/cate-1769393600/news-1790062263/",
+          "basis": "ข่าวทางการกรมที่ดิน"
+        },
+        "applicationEnd": {
+          "date": "2026-10-29",
+          "source": "https://www.dol.go.th/trat/cate-1769393600/news-1790062263/",
+          "basis": "ข่าวทางการกรมที่ดิน"
+        }
+      },
+      "rounds": [],
+      "researchSummary": "ข่าวทางการกรมที่ดินระบุเปิดรับสมัคร 2–29 ต.ค. 2569 นักวิชาการคอมพิวเตอร์ปฏิบัติการ 3 อัตรา จากรวม 26 อัตรา 6 ตำแหน่ง ยังไม่ยืนยันวันสอบหรือวันบรรจุ",
+      "researchVersion": "2026-10-15-v3",
+      "vacancies": 3
     }
   ]
 }

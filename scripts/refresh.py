@@ -1,6 +1,6 @@
 """Read public announcement pages. Never infer appointment ranks from text."""
 from __future__ import annotations
-import hashlib,json,re,sys,concurrent.futures
+import hashlib,json,re,sys,concurrent.futures,os
 from datetime import datetime,timezone
 from html.parser import HTMLParser
 from pathlib import Path
@@ -59,12 +59,21 @@ def extract(body,source):
   items.append({'id':item_id,'agencyId':source['id'],'agency':source['agency'],'title':title[:500],'url':destination,'document':unquote(p.path.rsplit('/',1)[-1]) if is_doc else '', 'published':published,'evidence':'official-page','reviewRequired':True})
  return items[:60]
 def read_page(url):
- req=Request(url,headers={'User-Agent':'ExamPathTracker/1.0 (public government announcement reader)','Accept':'text/html,application/xhtml+xml'})
- with urlopen(req,timeout=25) as response:
-  raw=response.read(3_000_001)
-  if len(raw)>3_000_000:raise ValueError('หน้าเว็บใหญ่เกินขอบเขตที่ตรวจ')
-  if 'html' not in response.headers.get('Content-Type',''):raise ValueError('ต้นทางไม่ได้ส่งหน้า HTML')
-  return raw.decode(response.headers.get_content_charset() or 'utf-8',errors='replace')
+ req=Request(url,headers={'User-Agent':'ExamPathTracker/2.0 (public government announcement reader)','Accept':'text/html,application/xhtml+xml'})
+ try:
+  with urlopen(req,timeout=12) as response:
+   raw=response.read(3_000_001)
+   if len(raw)>3_000_000:raise ValueError('หน้าเว็บใหญ่เกินขอบเขตที่ตรวจ')
+   if 'html' not in response.headers.get('Content-Type',''):raise ValueError('ต้นทางไม่ได้ส่งหน้า HTML')
+   return raw.decode(response.headers.get_content_charset() or 'utf-8',errors='replace')
+ except Exception:
+  endpoint=os.environ.get('SITE_MONITOR_URL','')
+  access=os.environ.get('SITE_MONITOR_ACCESS','')
+  if not endpoint or not access:raise
+  relay=Request(endpoint+'?'+urlencode({'url':url}),headers={'OAI-Sites-Authorization':'Bearer '+access,'Accept':'application/json'})
+  with urlopen(relay,timeout=25) as response:result=json.loads(response.read(4_000_000))
+  if result.get('url')!=url or not isinstance(result.get('html'),str):raise ValueError('ต้นทางสำรองส่งข้อมูลไม่ตรง URL')
+  return result['html']
 def discover(source):
  body=read_page(source['source']);items=extract(body,source)
  if items:return items
@@ -128,6 +137,7 @@ def refresh():
  try:previous=json.loads(destination.read_text(encoding='utf-8-sig'))
  except (OSError,ValueError):previous={'sources':[],'items':[]}
  sources=json.loads((ROOT/'public/data/accounts.json').read_text(encoding='utf-8-sig'))['records']
+ sources=[r for r in sources if not r.get('archived')]
  old_items={i['id']:i for i in previous.get('items',[])};statuses=[];found=[]
  with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
   futures=[pool.submit(fetch,s,now,previous) for s in sources]
@@ -152,5 +162,6 @@ def refresh():
    f.write(f'## Announcement refresh\n\nChecked at {now}: {ok}/{len(statuses)} sources readable; {len(found)} announcements.\n\nNo appointment ranks were inferred. Failed sources are shown on the website.\n')
  return result
 if __name__=='__main__':refresh()
+
 
 

@@ -30,5 +30,36 @@ function cleanRecord(r,baseline={}){
  if(!out.agency||!out.position)throw Error('กรอกชื่อหน่วยงานและตำแหน่ง');
  if(JSON.stringify(out).length>100000)throw Error('ข้อมูลบัญชียาวเกินกำหนด');return out;
 }
-const api={today,expiry,latest,plan,cleanRecord};if(typeof module!=='undefined')module.exports=api;else root.ExamCore=api;
+
+function uniqueRows(a=[],b=[]){const map=new Map();for(const row of [...a,...b]){if(!row||typeof row!=='object')continue;const key=row.id||JSON.stringify(row);map.set(key,{...(map.get(key)||{}),...row})}return [...map.values()]}
+function mergeRecords(cloud,local,pending=[],defaults=[]){
+ const dirty=new Set(pending),map=new Map(cloud.map(r=>[r.id,{...r}]));
+ for(const r of local){const c=map.get(r.id);if(!c){map.set(r.id,{...r});continue}
+ const merged=dirty.has(r.id)?{...c,...r}:{...r,...c};
+ // Missing baseline values never erase a saved personal rank or notes.
+ merged.rank=dirty.has(r.id)?r.rank:(c.rank??r.rank??null);
+ merged.note=dirty.has(r.id)?r.note:(c.note||r.note||'');
+ merged.events=uniqueRows(r.events,c.events);merged.history=uniqueRows(r.history,c.history);merged.milestones=uniqueRows(r.milestones,c.milestones);
+ merged.called=Math.max(latest(c)||0,latest(r)||0)||null;
+ map.set(r.id,merged);
+ }
+ return migrate([...map.values()],defaults);
+}
+function migrate(records,defaults){
+ const map=new Map(records.map(r=>[r.id,r]));
+ for(const b of defaults){const r=map.get(b.id);if(!r){map.set(b.id,cleanRecord({...b}));continue}
+ const copy={...b,...r,sources:uniqueRows(r.sources,b.sources)};
+ if(b.researchVersion&&r.researchVersion!==b.researchVersion){
+  copy.dates={...(r.dates||{}),...(b.dates||{})};copy.rounds=uniqueRows(r.rounds,b.rounds);copy.researchVersion=b.researchVersion;
+  copy.sources=uniqueRows(r.sources,b.sources);copy.researchSummary=b.researchSummary||r.researchSummary;
+ }
+ copy.called=Math.max(latest(r)||0,b.called||0)||null;
+ if(!copy.start&&b.start)copy.start=b.start;if(!copy.expiry&&copy.start)copy.expiry=expiry(copy.start);
+ map.set(b.id,cleanRecord(copy));
+ }
+ const withdrawn=map.get('opsmoac-policy-2569');if(withdrawn)map.set(withdrawn.id,{...withdrawn,status:'ถอนตัว',archived:true,archiveReason:'ไม่ได้ไปสอบ · นำออกตามคำขอ 15 ต.ค. 2569'});
+ return [...map.values()];
+}
+const api={today,expiry,latest,plan,cleanRecord,uniqueRows,mergeRecords,migrate};
+if(typeof module!=='undefined')module.exports=api;else root.ExamCore=api;
 })(typeof globalThis!=='undefined'?globalThis:this);
