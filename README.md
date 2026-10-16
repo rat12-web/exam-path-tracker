@@ -27,3 +27,20 @@ GitHub อาจรันงานช้าหรือพัก schedule เม
 - node scripts/sync-browser-check.cjs
 
 CI ตรวจการเก็บข้อมูล เอกสาร หน้าจอมือถือ การรวมข้อมูลระหว่างสอง origin และ retry เมื่อ revision ขัดแย้งก่อนเผยแพร่
+
+## แจ้งเตือน LINE OA เข้าแชตส่วนตัว
+
+ใช้ LINE Messaging API ส่งเฉพาะผู้รับที่ตั้งค่า ไม่ใช้ broadcast และไม่ต้องแก้ webhook ของ OA เดิม
+
+1. เพิ่ม LINE OA เป็นเพื่อนใน LINE ส่วนตัว
+2. เปิด [LINE Developers Console](https://developers.line.biz/console/) เลือก Messaging API channel ของ OA
+3. แท็บ Messaging API: คัดลอก Channel access token ที่ใช้ส่งข้อความ
+4. แท็บ Basic settings: คัดลอก Your user ID ซึ่งขึ้นต้นด้วย U และตามด้วยอักขระฐานสิบหก 32 ตัว (ไม่ใช่ LINE ID หรือ OA Basic ID)
+5. เพิ่ม [GitHub Actions secrets](https://github.com/rat12-web/exam-path-tracker/settings/secrets/actions) สองชื่อ: LINE_CHANNEL_ACCESS_TOKEN และ LINE_RECIPIENT_ID ใส่ค่าเฉพาะในช่อง Secret ไม่ส่งในแชตหรือ commit
+6. เปิดหน้า Actions เลือก Publish tracker and check announcements แล้ว Run workflow ครั้งแรกที่มีค่าครบจะส่งข้อความยืนยันการเชื่อมหนึ่งครั้ง รอบถัดไปเลือก line_test ได้เมื่อต้องการทดสอบอีกครั้ง
+
+ตรวจทุก 6 ชั่วโมงและส่งหลัง deploy สำเร็จ แจ้งข่าวทางการที่ตรงโครงการปัจจุบัน พร้อมป้ายรอตรวจตำแหน่ง/ปีบัญชี ไม่เดาลำดับจาก PDF และแจ้งเมื่อลำดับสาธารณะที่ตรวจบันทึกแล้วเปลี่ยน ยังไม่รวมการแก้ข้อมูลส่วนตัวในฐานข้อมูล Site
+
+ระบบเก็บประวัติแยกด้วย Actions cache และใช้ X-Line-Retry-Key คงเดิมเมื่อ retry รายการเดียวกัน ไม่ส่งข่าวย้อนหลังเมื่อเริ่มต้นหรือ cache หาย ส่งไม่เกิน 8 รายการต่อรอบ ที่เหลือรอรอบถัดไป LINE คิดจำนวนข้อความตามโควตาของ OA; HTTP 200 หมายถึงรับคำขอแล้ว ไม่รับประกันว่าผู้รับเห็นข้อความหากบล็อก OA
+
+หากขาด secrets ระบบจะระบุว่ายังไม่เชื่อมโดยไม่ส่งข้อความ หาก API ปฏิเสธหรือยังส่งไม่สำเร็จ งาน notify-line จะล้มเหลวและเก็บประวัติรายการที่ส่งสำเร็จไว้ ไม่มี token หรือ user ID ใน public assets/logs

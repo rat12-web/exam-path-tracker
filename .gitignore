@@ -11,4 +11,6 @@ site-release-stage*/
 site-sync-release.tar.gz
 
 .research-runtime/
+.line-notification-state.json
+.line-notification-state.tmp
 
