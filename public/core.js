@@ -6,6 +6,13 @@ function iso(d){return d.toISOString().slice(0,10)}
 function today(){return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
 function expiry(start){if(!start)return '';const d=day(start);d.setUTCFullYear(d.getUTCFullYear()+2);d.setUTCDate(d.getUTCDate()-1);return iso(d)}
 function latest(r){const ev=(r.events||[]).filter(e=>e.kind==='call'&&e.level!=='ข่าวรอตรวจสอบ'&&Number.isInteger(e.to)).map(e=>e.to);return Math.max(r.called||0,...ev)||null}
+function stage(r){
+ if(r.archived)return 'archived';
+ if(latest(r)!=null)return 'account';
+ if(/รอสมัคร|วางแผนสมัคร/.test(r.status||''))return 'application';
+ if(/รอผล|สอบแล้ว/.test(r.status||''))return 'completed';
+ return 'upcoming';
+}
 function plan(r,asOf=today()){
  const called=latest(r),gap=r.rank&&called!=null?Math.max(0,r.rank-called):null;
  const elapsed=r.start?Math.max(0,(day(asOf)-day(r.start))/86400000/monthDays):null,remaining=r.expiry?Math.max(0,(day(r.expiry)-day(asOf))/86400000/monthDays):null;
@@ -52,6 +59,9 @@ function migrate(records,defaults){
  if(b.researchVersion&&r.researchVersion!==b.researchVersion){
   copy.dates={...(r.dates||{}),...(b.dates||{})};copy.rounds=uniqueRows(r.rounds,b.rounds);copy.researchVersion=b.researchVersion;
   copy.sources=uniqueRows(r.sources,b.sources);copy.researchSummary=b.researchSummary||r.researchSummary;
+  if(b.logo)copy.logo=b.logo;
+  copy.checkedAt=b.checkedAt||r.checkedAt;
+  if(b.sourceReview)copy.sourceReview=b.sourceReview;
  }
  copy.called=Math.max(latest(r)||0,b.called||0)||null;
  if(!copy.start&&b.start)copy.start=b.start;if(!copy.expiry&&copy.start)copy.expiry=expiry(copy.start);
@@ -60,6 +70,6 @@ function migrate(records,defaults){
  const withdrawn=map.get('opsmoac-policy-2569');if(withdrawn)map.set(withdrawn.id,{...withdrawn,status:'ถอนตัว',archived:true,archiveReason:'ไม่ได้ไปสอบ · นำออกตามคำขอ 15 ต.ค. 2569'});
  return [...map.values()];
 }
-const api={today,expiry,latest,plan,cleanRecord,uniqueRows,mergeRecords,migrate};
+const api={today,expiry,latest,plan,stage,cleanRecord,uniqueRows,mergeRecords,migrate};
 if(typeof module!=='undefined')module.exports=api;else root.ExamCore=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

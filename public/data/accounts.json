@@ -67,7 +67,14 @@
           "basis": "ประกาศทางการ"
         }
       ],
-      "researchVersion": "2026-10-15-v2"
+      "researchVersion": "2026-10-16-v1",
+      "sourceReview": {
+        "checkedAt": "2026-10-16T04:36:32.255691+00:00",
+        "note": "ตรวจรายการประกาศแล้ว ยังไม่พบหลักฐานใหม่ที่ยืนยันลำดับเกิน 11 จึงคงลำดับเดิม",
+        "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
+        "url": "https://dip.thaijobjob.com/2026062/index.php",
+        "document": "news_10-09-2569_15-40-15.pdf"
+      }
     },
     {
       "id": "msdhs",
@@ -137,7 +144,7 @@
           "basis": "ประกาศทางการและเอกสารแนบท้ายที่ตรวจภาพแล้ว"
         }
       },
-      "researchVersion": "2026-10-15-v4",
+      "researchVersion": "2026-10-16-v1",
       "rounds": [
         {
           "id": "msdhs-first-official",
@@ -150,7 +157,14 @@
           "source": "https://m-society.thaijobjob.com/20251001/index.php",
           "basis": "ประกาศทางการ เอกสารแนบท้าย 2 (_20.pdf)"
         }
-      ]
+      ],
+      "sourceReview": {
+        "checkedAt": "2026-10-16T04:36:32.255691+00:00",
+        "note": "ยังไม่พบหลักฐานใหม่ยืนยันรอบ 57–60 จากรายการที่ตรวจ ลำดับ 60 คงเป็นข้อมูลผู้ใช้",
+        "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
+        "url": "https://m-society.thaijobjob.com/20251001/index.php",
+        "document": "m-society20251001_16.pdf"
+      }
     },
     {
       "id": "nia",
@@ -175,7 +189,15 @@
       "monitorSources": [
         "https://nia.thaijobjob.com/202604/index.php",
         "https://nia.thaijobjob.com/202603/index.php"
-      ]
+      ],
+      "researchVersion": "2026-10-16-v1",
+      "sourceReview": {
+        "checkedAt": "2026-10-16T04:36:32.255691+00:00",
+        "note": "พบประกาศรายชื่อผู้มีสิทธิสอบวัดความเหมาะสมกับตำแหน่ง แยกโครงการสอบแข่งขันกับโครงการภาษาต่างประเทศ; ยังไม่พบหลักฐานที่ยืนยันผลของผู้ใช้",
+        "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
+        "url": "https://nia.thaijobjob.com/202603/index.php",
+        "document": "news_08-07-2569_13-49-25.pdf"
+      }
     },
     {
       "id": "mhesi",
@@ -243,7 +265,14 @@
           "basis": "ประกาศทางการ"
         }
       ],
-      "researchVersion": "2026-10-15-v2"
+      "researchVersion": "2026-10-16-v1",
+      "sourceReview": {
+        "checkedAt": "2026-10-16T04:36:32.255691+00:00",
+        "note": "หน้าประกาศยังแสดงประกาศขึ้นบัญชี 18 ก.ย. 2569 ลำดับ 15 ยังเป็นข้อมูลผู้ใช้ ไม่ใช่ยอดบรรจุจริงที่ยืนยันใหม่",
+        "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
+        "url": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial",
+        "document": ""
+      }
     },
     {
       "id": "doe",
@@ -270,7 +299,15 @@
         "https://doe.thaijobjob.com/202605/index.php",
         "https://doe.thaijobjob.com/202602/index.php",
         "https://doe.thaijobjob.com/2025103/index.php"
-      ]
+      ],
+      "researchVersion": "2026-10-16-v1",
+      "sourceReview": {
+        "checkedAt": "2026-10-16T04:36:32.255691+00:00",
+        "note": "พบรายชื่อผู้มีสิทธิสอบภาค ค. เผยแพร่ 4 ก.ย. 2569 คงสถานะส่วนตัวสอบแล้ว / รอผล ยังไม่ยืนยันวันประกาศผลใหม่",
+        "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
+        "url": "https://doe.thaijobjob.com/202605/index.php",
+        "document": "news_04-09-2569_17-24-16.pdf"
+      }
     },
     {
       "id": "moj",
@@ -297,7 +334,15 @@
         "https://moj.thaijobjob.com/202603/index.php",
         "https://moj.thaijobjob.com/202511/index.php",
         "https://moj.thaijobjob.com/202503/index.php"
-      ]
+      ],
+      "researchVersion": "2026-10-16-v1",
+      "sourceReview": {
+        "checkedAt": "2026-10-16T04:36:32.255691+00:00",
+        "note": "พบประกาศเลื่อนกำหนดประกาศขึ้นบัญชี เผยแพร่ 12 ต.ค. 2569 คงกลุ่มสอบแล้ว / รอผล; วันประกาศผลใหม่ยังไม่ยืนยันจากเนื้อหา PDF",
+        "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
+        "url": "https://moj.thaijobjob.com/202605/index.php",
+        "document": "news_12-10-2569_09-51-51.pdf"
+      }
     },
     {
       "id": "opsmoac-policy-2569",
@@ -333,7 +378,7 @@
       "start": "",
       "expiry": "",
       "source": "https://ombudsman.thaijobjob.com/202606/index.php",
-      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Emblem_of_the_Office_of_the_Ombudsman.svg/500px-Emblem_of_the_Office_of_the_Ombudsman.svg.png",
+      "logo": "assets/ombudsman.png",
       "called": null,
       "calledAt": "",
       "calledBasis": "ประกาศทางการ",
@@ -341,7 +386,16 @@
       "events": [],
       "history": [],
       "sources": [],
-      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ"
+      "researchSummary": "ยังไม่มีบัญชีสำหรับประเมินลำดับ",
+      "researchVersion": "2026-10-16-v1",
+      "sourceReview": {
+        "checkedAt": "2026-10-16T04:36:32.255691+00:00",
+        "note": "พบประกาศแจ้งความคืบหน้าการสอบ เผยแพร่ 28 ก.ย. 2569 จัดไว้ในรอกำหนดการ / รอสอบ; ยังไม่ยืนยันวันสอบจากเนื้อหา PDF",
+        "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
+        "url": "https://ombudsman.thaijobjob.com/202606/index.php",
+        "document": "news_28-09-2569_16-40-03.pdf"
+      },
+      "logoSource": "https://www.ombudsman.go.th/new/wp-content/uploads/2026/08/favicon.png"
     },
     {
       "id": "ddpm-policy-account",
@@ -404,7 +458,14 @@
           "basis": "ประกาศทางการ"
         }
       ],
-      "researchVersion": "2026-10-15-v2"
+      "researchVersion": "2026-10-16-v1",
+      "sourceReview": {
+        "checkedAt": "2026-10-16T04:36:32.255691+00:00",
+        "note": "ตรวจรายการประกาศขึ้นบัญชีแล้ว ลำดับล่าสุด 75 ยังเป็นข้อมูลผู้ใช้ ยังไม่ยืนยันประกาศรอบใหม่",
+        "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
+        "url": "https://ddpm.thaijobjob.com/202605/index.php",
+        "document": "news_10-08-2569_09-45-49.pdf"
+      }
     },
     {
       "id": "dol-computer-2569",
@@ -417,7 +478,7 @@
       "start": "",
       "expiry": "",
       "source": "https://dol.thaijobjob.com/",
-      "logo": "",
+      "logo": "assets/dol.webp",
       "called": null,
       "calledAt": "",
       "calledBasis": "",
@@ -450,14 +511,22 @@
       },
       "rounds": [],
       "researchSummary": "ข่าวทางการกรมที่ดินระบุเปิดรับสมัคร 2–29 ต.ค. 2569 นักวิชาการคอมพิวเตอร์ปฏิบัติการ 3 อัตรา จากรวม 26 อัตรา 6 ตำแหน่ง ยังไม่ยืนยันวันสอบหรือวันบรรจุ",
-      "researchVersion": "2026-10-15-v3",
+      "researchVersion": "2026-10-16-v1",
       "vacancies": 3,
       "monitorSources": [
         "https://dol.thaijobjob.com/202610/index.php",
         "https://dol.thaijobjob.com/2025121/index.php",
         "https://dol.thaijobjob.com/202512/index.php",
         "https://dol.thaijobjob.com/202504/index.php"
-      ]
+      ],
+      "sourceReview": {
+        "checkedAt": "2026-10-16T04:36:32.255691+00:00",
+        "note": "คงสถานะส่วนตัวรอสมัคร รับสมัคร 2–29 ต.ค. 2569 ตามข่าวกรมที่ดิน นักวิชาการคอมพิวเตอร์ 3 อัตรา; ยังไม่ยืนยันวันสอบ",
+        "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
+        "url": "https://dol.thaijobjob.com/",
+        "document": ""
+      },
+      "logoSource": "https://www.dol.go.th/themes/dol_v1/assets/images/default_logo.webp"
     }
   ]
 }
