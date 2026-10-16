@@ -86,7 +86,8 @@ def verify_bot(token,expected):
  try:
   with urlopen(request,timeout=20) as response:info=json.loads(response.read(100000))
  except Exception:raise RuntimeError('ยังยืนยัน LINE OA เดิมไม่ได้ ตรวจ token และการเชื่อมต่อ') from None
- normalize=lambda s:' '.join(str(s).split()).casefold()
+ print('ชื่อ OA ในการเชื่อมต่อเดิม: '+str(info.get('displayName',''))[:100])
+ normalize=lambda s:''.join(c for c in str(s).casefold() if c.isalnum())
  if normalize(info.get('displayName'))!=normalize(expected):raise RuntimeError('ชื่อ LINE OA ไม่ตรงกับ '+expected+' จึงยังไม่ส่งข้อความ')
  print('ยืนยัน LINE OA: '+expected)
 
