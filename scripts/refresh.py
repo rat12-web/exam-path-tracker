@@ -8,7 +8,7 @@ from urllib.request import Request,urlopen
 from urllib.parse import urljoin,urlparse,unquote,urlencode
 import xml.etree.ElementTree as ET
 ROOT=Path(__file__).resolve().parents[1]
-KEYWORDS=re.compile(r'ขึ้นบัญชี|เรียก|รายชื่อ|ผลการ|สอบ|บรรจุ|กำหนด|สมัคร|นักทรัพยากร|นักพัฒนา|นักวิชาการ')
+KEYWORDS=re.compile(r'ขึ้นบัญชี|เรียก|รายชื่อ|ผลการ|สอบ|บรรจุ|กำหนด|สมัคร|นักทรัพยากร|นักพัฒนา|นักวิชาการ|รายงานตัว|ความคืบหน้า|ขอใช้บัญชี')
 class Node:
  def __init__(self,tag='',attrs=(),parent=None):self.tag=tag;self.attrs=dict(attrs);self.parent=parent;self.children=[]
  def text(self):return ''.join(c if isinstance(c,str) else c.text() for c in self.children)
@@ -48,8 +48,6 @@ def extract(body,source):
   item_id=hashlib.sha256((source['id']+'|'+absolute).encode()).hexdigest()[:20]
   if item_id in seen:continue
   seen.add(item_id)
-  # ThaiJobJob's relative news links are often intercepted by its S3 resolver.
-  # Link to the stable portal, retaining the document filename for identification.
   destination=base if 'thaijobjob.com' in p.hostname and is_doc else absolute
   published='';match=re.search(r'news_(\d{1,2})-(\d{1,2})-(25\d{2})',unquote(href))
   if match:
@@ -78,14 +76,17 @@ def read_page(url):
 def discover(source):
  if source.get('monitorSources'):
   items=[]
+  source_host=urlparse(source['source']).hostname or ''
+  official_domain=OFFICIAL_DOMAINS.get(source['id'],'')
   for target in source['monitorSources']:
-   if urlparse(target).hostname!=urlparse(source['source']).hostname:raise ValueError('แหล่งติดตามต้องเป็นหน่วยงานเดียวกัน')
+   target_host=urlparse(target).hostname or ''
+   is_valid=(target_host==source_host or (official_domain and (target_host==official_domain or target_host.endswith('.'+official_domain))) or target_host.endswith('.go.th'))
+   if not is_valid:raise ValueError('แหล่งติดตามต้องเป็นหน่วยงานเดียวกัน')
    items.extend(extract(read_page(target),{**source,'source':target}))
   return list({item['id']:item for item in items}.values())[:100]
  body=read_page(source['source']);items=extract(body,source)
  if items:return items
  doc=Document();doc.feed(body)
- # Follow only an actual same-host frame advertised by the public landing page.
  for frame in doc.frames[:1]:
   frame_url=urljoin(source['source'],frame.attrs.get('src',''))
   if urlparse(frame_url).hostname!=urlparse(source['source']).hostname:continue
@@ -101,12 +102,36 @@ def discover(source):
   if items:return list({item['id']:item for item in items}.values())[:100]
  return items
 
-OFFICIAL_DOMAINS={'diprom':'dip.go.th','msdhs':'hrm.m-society.go.th','nia':'nia.go.th','doe':'doe.go.th','moj':'moj.go.th','opsmoac-policy-2569':'opsmoac.go.th','ombudsman-academic-2569':'ombudsman.go.th','ddpm-policy-account':'disaster.go.th'}
+OFFICIAL_DOMAINS={
+ 'diprom':'dip.go.th',
+ 'msdhs':'hrm.m-society.go.th',
+ 'nia':'nia.go.th',
+ 'doe':'doe.go.th',
+ 'moj':'moj.go.th',
+ 'opsmoac-policy-2569':'opsmoac.go.th',
+ 'ombudsman-academic-2569':'ombudsman.go.th',
+ 'ddpm-policy-account':'disaster.go.th',
+ 'dol-computer-2569':'dol.go.th',
+ 'mhesi':'ops.go.th',
+ 'mdes':'mdes.go.th',
+ 'obec':'obec.go.th',
+ 'cgd':'cgd.go.th',
+ 'oncb':'oncb.go.th',
+ 'dmh':'dmh.go.th',
+ 'ddc':'ddc.moph.go.th',
+ 'drr':'drr.go.th',
+ 'sao':'audit.go.th',
+ 'dopa':'dopa.go.th',
+ 'doh':'doh.go.th',
+ 'dla':'dla.go.th',
+ 'ocsc':'ocsc.go.th'
+}
+
 def index_leads(source):
  domain=OFFICIAL_DOMAINS.get(source['id'])
  if not domain:return []
  position=source['position'].replace('ปฏิบัติการ','').replace('ปฏิบัติงาน','')
- query=f'site:{domain} "{position}" ("ขึ้นบัญชี" OR "รายชื่อ" OR "เรียก" OR "สอบ")'
+ query=f'site:{domain} "{position}" ("ขึ้นบัญชี" OR "รายชื่อ" OR "เรียก" OR "สอบ" OR "บรรจุ" OR "รายงานตัว")'
  url='https://www.bing.com/search?'+urlencode({'q':query,'format':'rss'})
  req=Request(url,headers={'User-Agent':'ExamPathTracker/1.0 (public government search-index leads)'})
  with urlopen(req,timeout=18) as response:raw=response.read(2_000_001)
@@ -139,6 +164,7 @@ def fetch(source,now,previous):
     return status,leads
   except Exception as index_error:status['message']+='; ดัชนีสำรอง: '+str(index_error)[:80]
   return status,[]
+
 def refresh():
  now=datetime.now(timezone.utc).isoformat();destination=ROOT/'public/data/announcements.json'
  try:previous=json.loads(destination.read_text(encoding='utf-8-sig'))
@@ -160,7 +186,7 @@ def refresh():
  retained=[i for i in previous.get('items',[]) if i['id'] not in found_ids]
  all_items=found+retained
  all_items.sort(key=lambda i:(i.get('published',''),i.get('firstSeen','')),reverse=True)
- result={'schemaVersion':1,'checkedAt':now,'schedule':'every 6 hours','sources':statuses,'items':all_items[:400],'rankUpdates':[],'note':'Automatic announcement discovery only. Appointment ranks require human verification.'}
+ result={'schemaVersion':1,'checkedAt':now,'schedule':'every 1 hour','sources':statuses,'items':all_items[:400],'rankUpdates':[],'note':'Automatic announcement discovery only. Appointment ranks require human verification.'}
  destination.parent.mkdir(parents=True,exist_ok=True);temp=destination.with_suffix('.tmp');temp.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8');temp.replace(destination)
  ok=sum(s['status']=='ok' for s in statuses)
  print(f'Checked {len(statuses)} sources; {ok} readable; {len(found)} announcements. No personal records modified.')
@@ -168,7 +194,5 @@ def refresh():
   with open(summary,'a',encoding='utf-8') as f:
    f.write(f'## Announcement refresh\n\nChecked at {now}: {ok}/{len(statuses)} sources readable; {len(found)} announcements.\n\nNo appointment ranks were inferred. Failed sources are shown on the website.\n')
  return result
+
 if __name__=='__main__':refresh()
-
-
-

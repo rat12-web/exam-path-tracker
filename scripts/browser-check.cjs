@@ -1,10 +1,10 @@
 const { chromium }=require('playwright');
 const http=require('node:http'),fs=require('node:fs/promises'),path=require('node:path'),assert=require('node:assert/strict');
 (async()=>{
- const root=path.resolve('public');const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.png':'image/png'};
+ const root=path.resolve('public');const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.png':'image/png','.webp':'image/webp','.svg':'image/svg+xml'};
  const server=http.createServer(async(req,res)=>{try{const name=decodeURIComponent(new URL(req.url,'http://localhost').pathname),file=path.resolve(root,'.'+(name==='/'?'/index.html':name));if(!file.startsWith(root+path.sep))throw Error();const data=await fs.readFile(file);res.writeHead(200,{'content-type':mime[path.extname(file)]||'application/octet-stream'});res.end(data)}catch{res.writeHead(404);res.end('Not found')}});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const url='http://127.0.0.1:'+server.address().port;
- const browser=await chromium.launch({headless:true});try{
+ const browser=await chromium.launch({headless:true,channel:process.env.PLAYWRIGHT_CHANNEL||(process.platform==='win32'?'msedge':undefined)});try{
  const page=await browser.newPage({viewport:{width:1366,height:950}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(url);await page.locator('.card').nth(8).waitFor();await fs.mkdir('reports',{recursive:true});await page.screenshot({path:'reports/public-preview.png'});assert.equal(await page.locator('.card').count(),9);assert.equal(await page.locator('.card').filter({hasText:'กรมที่ดิน'}).count(),1);assert.equal(await page.locator('.card').filter({hasText:'สำนักงานปลัดกระทรวงเกษตรและสหกรณ์'}).count(),0);
  assert.equal(await page.locator('[data-stage="completed"] .card').count(),3);assert.equal(await page.locator('[data-stage="upcoming"] .card').count(),1);assert.equal(await page.locator('[data-stage="application"] .card').count(),1);
@@ -16,6 +16,8 @@ const http=require('node:http'),fs=require('node:fs/promises'),path=require('nod
  await page.reload();await page.locator('.card').nth(8).waitFor();await page.getByRole('button',{name:'▧ เอกสารของฉัน',exact:true}).click();await page.getByRole('heading',{name:'smoke-proof.txt'}).waitFor();
  await page.getByRole('button',{name:'⌕ ประกาศและอัปเดต',exact:true}).click();await page.getByRole('heading',{name:'สถานะต้นทาง',exact:true}).waitFor();assert.equal(await page.locator('.source-status .panel').count(),9);
  await page.getByRole('button',{name:'▦ ภาพรวมบัญชี',exact:true}).click();await page.getByRole('heading',{name:'ภาพรวมเส้นทางบรรจุ',exact:true}).waitFor();
+ await page.getByRole('button',{name:'✦ ตำแหน่งที่เปิดรับ',exact:true}).click();await page.getByRole('heading',{name:'ตำแหน่งงานที่เปิดรับ (ค้นหาและจัดระเบียบ)',exact:true}).waitFor();assert(await page.locator('#main .card').count()>=5);
+ const trackBtn=page.locator('[data-track-opening="mdes-legal-audit-2569"]');if(await trackBtn.count()){await trackBtn.click();await page.locator('text=อยู่ในแผนของฉันแล้ว').first().waitFor();await page.getByRole('button',{name:'▦ ภาพรวมบัญชี',exact:true}).click();await page.locator('.card').filter({hasText:'สำนักงานปลัดกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม'}).waitFor()}
  await fs.mkdir('reports',{recursive:true});await page.screenshot({path:'reports/desktop.png',fullPage:true});await page.setViewportSize({width:390,height:844});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'mobile must not overflow horizontally');await page.screenshot({path:'reports/mobile.png',fullPage:true});
  assert.deepEqual(errors,[]);console.log('Browser checks passed: nine agencies, saved rank/call survives reload, local file survives reload, source status, mobile layout.');
  }finally{await browser.close();await new Promise(r=>server.close(r));}

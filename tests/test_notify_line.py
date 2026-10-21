@@ -2,8 +2,9 @@ import json,sys,unittest
 from pathlib import Path
 from urllib.error import HTTPError,URLError
 from email.message import Message
+from datetime import datetime,timezone,timedelta
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from notify_line import plan,baseline,push,fingerprint
+from notify_line import plan,baseline,push,fingerprint,check_daily_digest,TZ_BANGKOK
 
 class NotifyLine(unittest.TestCase):
  def setUp(self):
@@ -25,6 +26,25 @@ class NotifyLine(unittest.TestCase):
   state=baseline(self.feed,[self.record]);self.record['called']=7
   events,_,_=plan(self.feed,[self.record],state);self.assertEqual(len(events),1);self.assertIn('จาก 5 เป็น 7',events[0]['text'])
   state['called']['a']=7;self.item['title']+=' ฉบับแก้ไข';self.assertEqual(len(plan(self.feed,[self.record],state)[0]),1)
+ def test_daily_digest_at_09_and_18(self):
+  dt_09=datetime(2026,10,21,9,15,tzinfo=TZ_BANGKOK)
+  text,key,digests=check_daily_digest([self.record],{},now=dt_09)
+  self.assertIsNotNone(text)
+  self.assertEqual(key,'digest:2026-10-21_09:00')
+  self.assertIn('Agency',text)
+  self.assertIn('09:00 น.',text)
+  # Duplicate check
+  text_dup,key_dup,_=check_daily_digest([self.record],{'digests':digests},now=dt_09)
+  self.assertIsNone(text_dup)
+  # 18:00 check
+  dt_18=datetime(2026,10,21,18,5,tzinfo=TZ_BANGKOK)
+  text_18,key_18,digests_18=check_daily_digest([self.record],{'digests':digests},now=dt_18)
+  self.assertIsNotNone(text_18)
+  self.assertEqual(key_18,'digest:2026-10-21_18:00')
+  # Non-slot hour (14:00)
+  dt_14=datetime(2026,10,21,14,30,tzinfo=TZ_BANGKOK)
+  text_14,_,_=check_daily_digest([self.record],{},now=dt_14)
+  self.assertIsNone(text_14)
  def test_retry_uses_same_key_and_does_not_log_credentials(self):
   calls=[]
   class Success:

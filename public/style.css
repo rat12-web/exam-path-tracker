@@ -3,3 +3,28 @@
 .cloud-sync{display:flex;justify-content:space-between;align-items:center;gap:20px}.cloud-sync p{margin:4px 0;font-size:12px}.cloud-sync>.btn{flex-shrink:0}.date-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.date-grid b{display:block;margin:7px 0}.date-grid a{font-size:11px}.low-priority{margin-top:45px;border-top:2px dashed #dfb2b5;padding-top:5px}.sync-frame{display:none}@media(max-width:650px){.cloud-sync{align-items:flex-start;flex-direction:column}.date-grid{grid-template-columns:1fr}}
 
 .exam-stage{margin-top:32px;padding-top:8px;border-top:1px solid #dce5ef}.exam-stage[data-stage="completed"] .card{border-top-color:#5685b7}.exam-stage[data-stage="upcoming"] .card{border-top-color:#9a7bc0}.exam-stage[data-stage="application"] .card{border-top-color:#499d9a}.source-review{border-left:3px solid #b9cadf;padding:3px 10px;margin-top:14px;font-size:12px;line-height:1.8;color:#526982}.source-review small{color:#78889d}.source-review p{margin:4px 0}.section-title{flex-wrap:wrap}
+
+/* Openings View Styles */
+.filter-bar{background:white;border:1px solid #dde6f0;border-radius:15px;padding:20px;margin-bottom:24px;display:flex;flex-direction:column;gap:15px}
+.filter-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.search-input{flex:1;min-width:240px;padding:12px 16px;border:1px solid #cdd8e6;border-radius:10px;font-size:14px}
+.filter-select{padding:11px 14px;border:1px solid #cdd8e6;border-radius:10px;background:white;color:#203247;font-size:13px}
+.filter-chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid #d5e0ee;background:#f3f7fd;color:#355377;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.chip:hover{background:#e2ecf9}
+.chip.active{background:#2859d9;color:white;border-color:#2859d9}
+.badge-group{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.badge{display:inline-flex;align-items:center;padding:4px 9px;border-radius:6px;font-size:11px;font-weight:500}
+.badge-ocsc{background:#eaf2fe;color:#1c4ea0}
+.badge-nocsc{background:#edf7ed;color:#1e6b24}
+.badge-edu{background:#f4edf9;color:#5e2a86}
+.badge-family{background:#fdf2e9;color:#874205}
+.badge-open{background:#e1f5ea;color:#1d6b46;font-weight:bold}
+.badge-upcoming{background:#fef7e0;color:#8a5e00;font-weight:bold}
+.badge-closed{background:#f3f4f6;color:#5f6b7c}
+.opening-dates{background:#f7f9fd;border-radius:10px;padding:12px 14px;margin:12px 0;font-size:12px;line-height:1.8}
+.opening-dates strong{color:#142c49}
+.card.tracked{border-top-color:#2859d9}
+.btn.tracked{background:#e8f0fe;color:#1a4bb3;border-color:#bcd0f7;cursor:default}
+.fresh-pill{background:#dcf3e7;color:#13623f;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.fresh-pill::before{content:'';width:7px;height:7px;background:#1da463;border-radius:50%;display:inline-block}
