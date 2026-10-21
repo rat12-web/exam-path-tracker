@@ -23,3 +23,17 @@ test('bad imports cannot silently corrupt account data',()=>{const r={...records
 
 test('migration archives missed exam, preserves personal history, and adds DOL without resetting ranks',()=>{const original={...records[0],rank:42,note:'personal note',events:[{id:'x',kind:'call',to:20,level:'ข้อมูลที่ผู้ใช้แจ้ง'}]};const migrated=C.migrate([original],records);assert.equal(migrated.find(r=>r.id===original.id).rank,42);assert.equal(migrated.find(r=>r.id===original.id).note,'personal note');assert.equal(C.latest(migrated.find(r=>r.id===original.id)),20);assert(migrated.find(r=>r.id==='opsmoac-policy-2569').archived);assert.equal(migrated.find(r=>r.id==='dol-computer-2569').status,'รอสมัคร');assert.deepEqual(C.migrate(migrated,records),migrated)});
 test('cloud merge retains both event histories and explicit pending rank edits',()=>{const c={...records[0],rank:42,events:[{id:'cloud',kind:'call',to:20,level:'ประกาศทางการ'}]},l={...records[0],rank:41,note:'offline change',events:[{id:'local',kind:'call',to:22,level:'ข้อมูลที่ผู้ใช้แจ้ง'}]};const merged=C.mergeRecords([c],[l],[l.id],records).find(r=>r.id===l.id);assert.equal(merged.rank,41);assert.equal(merged.events.length,2);assert.equal(C.latest(merged),22);assert.equal(C.mergeRecords([c],[{...l,rank:null}],[],records).find(r=>r.id===l.id).rank,42)});
+
+test('openings catalog has 29 unique single-position items with 100% valid logo resolution',()=>{
+ const openings=require('../public/data/openings.json').items;
+ assert.equal(openings.length,29);
+ const ids=new Set();
+ for(const op of openings){
+  assert(op.id&&!ids.has(op.id),'Each opening must have unique id: '+op.id);
+  ids.add(op.id);
+  assert(op.position&&op.position.length>2,'Must have position title');
+  assert(op.agency&&op.agency.length>2,'Must have agency name');
+  const logo=C.resolveLogo(op);
+  assert(logo&&logo.startsWith('assets/'),'Must resolve to official asset logo: '+op.agency);
+ }
+});

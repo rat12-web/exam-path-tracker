@@ -34,6 +34,23 @@ function openingStatus(op){
  return 'closed';
 }
 
+function eduBadge(op){
+ const text=((op.level||'')+' '+(op.education||'')).toLowerCase();
+ if(/ปริญญาโท|ป\.โท|ชำนาญการพิเศษ/.test(text)){
+  return `<span class="badge badge-edu-master">🎓 ปริญญาโท</span>`;
+ }
+ if(/ปริญญาตรี|ป\.ตรี|ปฏิบัติการ|ครูผู้ช่วย/.test(text)){
+  return `<span class="badge badge-edu-bachelor">🎓 ปริญญาตรี</span>`;
+ }
+ if(/ปวส|อนุปริญญา|ปฏิบัติงาน/.test(text)){
+  return `<span class="badge badge-edu-diploma">🎓 ปวส. / อนุปริญญา</span>`;
+ }
+ if(/ปวช|ประกาศนียบัตรวิชาชีพ(?!ชั้นสูง)|ระดับต้น|บริการ/.test(text)){
+  return `<span class="badge badge-edu-vocational">🎓 ปวช.</span>`;
+ }
+ return `<span class="badge badge-edu">🎓 ${esc(op.level||'ทั่วไป')}</span>`;
+}
+
 function openingCard(op){
  const st=openingStatus(op);
  const isTracked=state.records.some(r=>r.id===op.id||r.id===op.recordId);
@@ -62,10 +79,10 @@ function openingCard(op){
   </div>
   <div class="badge-group">
    <span class="badge ${badgeClass}">${badgeText}</span>
-   <span class="badge badge-edu">${esc(op.level||'')}</span>
-   <span class="badge badge-family">${esc(op.jobFamily||'')}</span>
+   ${eduBadge(op)}
+   <span class="badge badge-family">💼 ${esc(op.jobFamily||'ทั่วไป')}</span>
    ${ocscBadge}
-   ${op.vacancies?`<span class="badge">${fmt(op.vacancies)} อัตรา</span>`:''}
+   ${op.vacancies?`<span class="badge">👥 ${fmt(op.vacancies)} อัตรา</span>`:''}
   </div>
   <div class="opening-dates">
    <div><b>ช่วงรับสมัคร:</b> ${date(op.applicationStart)} – ${date(op.applicationEnd)}</div>
@@ -101,10 +118,14 @@ function openings(){
   list=list.filter(op=>openingStatus(op)===openingsFilter.status);
  }
  if(openingsFilter.education!=='all'){
-  if(openingsFilter.education==='bachelor'){
-   list=list.filter(op=>/ปริญญาตรี|ป\.ตรี|ปฏิบัติการ/.test(op.level||'')||/ปริญญาตรี/.test(op.education||''));
+  if(openingsFilter.education==='master'){
+   list=list.filter(op=>/ปริญญาโท|ป\.โท|ชำนาญการพิเศษ/.test(op.level||'')||/ปริญญาโท|ป\.โท/.test(op.education||''));
+  }else if(openingsFilter.education==='bachelor'){
+   list=list.filter(op=>/ปริญญาตรี|ป\.ตรี|ปฏิบัติการ|ครูผู้ช่วย/.test(op.level||'')||/ปริญญาตรี|ป\.ตรี/.test(op.education||''));
   }else if(openingsFilter.education==='diploma'){
    list=list.filter(op=>/ปวส|อนุปริญญา|ปฏิบัติงาน/.test(op.level||'')||/ปวส|อนุปริญญา/.test(op.education||''));
+  }else if(openingsFilter.education==='vocational'){
+   list=list.filter(op=>/ปวช|ประกาศนียบัตรวิชาชีพ(?!ชั้นสูง)|ระดับต้น|บริการ/.test(op.level||'')||/ปวช|ประกาศนียบัตรวิชาชีพ(?!ชั้นสูง)/.test(op.education||''));
   }
  }
  if(openingsFilter.jobFamily!=='all'){
@@ -167,9 +188,11 @@ function openings(){
     <button class="chip ${openingsFilter.status==='closed'?'active':''}" data-filter-status="closed">เพิ่งปิดรับสมัคร</button>
    </div>
    <select id="filter-edu" class="filter-select" aria-label="กรองระดับวุฒิ">
-    <option value="all" ${openingsFilter.education==='all'?'selected':''}>🎓 วุฒิทั้งหมด</option>
-    <option value="bachelor" ${openingsFilter.education==='bachelor'?'selected':''}>ปริญญาตรี (ปฏิบัติการ)</option>
-    <option value="diploma" ${openingsFilter.education==='diploma'?'selected':''}>ปวส. / อนุปริญญา (ปฏิบัติงาน)</option>
+    <option value="all" ${openingsFilter.education==='all'?'selected':''}>🎓 ทุกระดับวุฒิ</option>
+    <option value="master" ${openingsFilter.education==='master'?'selected':''}>🎓 ปริญญาโท (ชำนาญการพิเศษ)</option>
+    <option value="bachelor" ${openingsFilter.education==='bachelor'?'selected':''}>🎓 ปริญญาตรี (ปฏิบัติการ / ครู)</option>
+    <option value="diploma" ${openingsFilter.education==='diploma'?'selected':''}>🎓 ปวส. / อนุปริญญา (ปฏิบัติงาน)</option>
+    <option value="vocational" ${openingsFilter.education==='vocational'?'selected':''}>🎓 ปวช. (ระดับต้น / บริการ)</option>
    </select>
    <select id="filter-family" class="filter-select" aria-label="กรองสายงาน">
     <option value="all" ${openingsFilter.jobFamily==='all'?'selected':''}>💼 ทุกสายงาน</option>

@@ -15,10 +15,47 @@ const http=require('node:http'),fs=require('node:fs/promises'),path=require('nod
  await page.getByRole('button',{name:'▧ เอกสารของฉัน',exact:true}).click();await page.locator('input[name="file"]').setInputFiles({name:'smoke-proof.txt',mimeType:'text/plain',buffer:Buffer.from('Local document persistence test')});await page.getByRole('button',{name:'บันทึกเอกสาร',exact:true}).click();await page.getByRole('heading',{name:'smoke-proof.txt'}).waitFor();
  await page.reload();await page.locator('.card').nth(8).waitFor();await page.getByRole('button',{name:'▧ เอกสารของฉัน',exact:true}).click();await page.getByRole('heading',{name:'smoke-proof.txt'}).waitFor();
  await page.getByRole('button',{name:'⌕ ประกาศและอัปเดต',exact:true}).click();await page.getByRole('heading',{name:'สถานะต้นทาง',exact:true}).waitFor();assert.equal(await page.locator('.source-status .panel').count(),9);
- await page.getByRole('button',{name:'▦ ภาพรวมบัญชี',exact:true}).click();await page.getByRole('heading',{name:'ภาพรวมเส้นทางบรรจุ',exact:true}).waitFor();
- await page.getByRole('button',{name:'✦ ตำแหน่งที่เปิดรับ',exact:true}).click();await page.getByRole('heading',{name:'ตำแหน่งงานที่เปิดรับ (ค้นหาและจัดระเบียบ)',exact:true}).waitFor();assert(await page.locator('#main .card').count()>=5);
- const trackBtn=page.locator('[data-track-opening="mdes-legal-audit-2569"]');if(await trackBtn.count()){await trackBtn.click();await page.locator('text=อยู่ในแผนของฉันแล้ว').first().waitFor();await page.getByRole('button',{name:'▦ ภาพรวมบัญชี',exact:true}).click();await page.locator('.card').filter({hasText:'สำนักงานปลัดกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม'}).waitFor()}
- await fs.mkdir('reports',{recursive:true});await page.screenshot({path:'reports/desktop.png',fullPage:true});await page.setViewportSize({width:390,height:844});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'mobile must not overflow horizontally');await page.screenshot({path:'reports/mobile.png',fullPage:true});
- assert.deepEqual(errors,[]);console.log('Browser checks passed: nine agencies, saved rank/call survives reload, local file survives reload, source status, mobile layout.');
+ 
+ // Test Openings Tab with 1-Position = 1-Card & Education Filters
+ await page.getByRole('button',{name:'✦ ตำแหน่งที่เปิดรับ',exact:true}).click();
+ await page.getByRole('heading',{name:'ตำแหน่งงานที่เปิดรับ (ค้นหาและจัดระเบียบ)',exact:true}).waitFor();
+ const allOpeningsCount = await page.locator('#main .card').count();
+ assert.equal(allOpeningsCount, 29, 'Must display exactly 29 standalone position cards');
+ 
+ // Verify Logo Size (48x48px Nemotron standard)
+ const logoBox = await page.locator('#main .card .logo').first().boundingBox();
+ assert.equal(Math.round(logoBox.width), 48, 'Logo width must be 48px');
+ assert.equal(Math.round(logoBox.height), 48, 'Logo height must be 48px');
+
+ // Test Education Filter: Bachelor
+ await page.locator('#filter-edu').selectOption('bachelor');
+ const bachCount = await page.locator('#main .card').count();
+ assert(bachCount >= 10, 'Must have at least 10 bachelor positions');
+
+ // Test Education Filter: Diploma (ปวส.)
+ await page.locator('#filter-edu').selectOption('diploma');
+ const dipCount = await page.locator('#main .card').count();
+ assert(dipCount >= 10, 'Must have at least 10 diploma positions');
+
+ // Reset Filter
+ await page.locator('#filter-edu').selectOption('all');
+ assert.equal(await page.locator('#main .card').count(), 29);
+
+ // Test Adding opening to dashboard
+ const trackBtn=page.locator('[data-track-opening="mdes-legal-2569"]');
+ if(await trackBtn.count()){
+  await trackBtn.click();
+  await page.locator('text=อยู่ในแผนของฉันแล้ว').first().waitFor();
+  await page.getByRole('button',{name:'▦ ภาพรวมบัญชี',exact:true}).click();
+  await page.locator('.card').filter({hasText:'สำนักงานปลัดกระทรวงดิจิทัลเพื่อเศรษฐกิจและสังคม'}).waitFor();
+ }
+
+ await fs.mkdir('reports',{recursive:true});
+ await page.screenshot({path:'reports/desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'mobile must not overflow horizontally');
+ await page.screenshot({path:'reports/mobile.png',fullPage:true});
+ assert.deepEqual(errors,[]);
+ console.log('Browser checks passed: 29 individual position cards, 48px balanced logos, education filtering (bachelor/diploma), tracking to dashboard, mobile responsiveness.');
  }finally{await browser.close();await new Promise(r=>server.close(r));}
 })().catch(e=>{console.error(e);process.exitCode=1});
