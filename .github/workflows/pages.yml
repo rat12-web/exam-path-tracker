@@ -4,7 +4,12 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: '*/10 * * * *' # Fast 10-minute check for waiting agencies
+    # 08:00 - 21:00 Bangkok (UTC+7) on Monday - Friday: Fast check every 10 minutes
+    - cron: '*/10 1-13 * * 1-5' # 08:00 - 20:50 Bangkok Mon-Fri
+    - cron: '0 14 * * 1-5'      # 21:00 Bangkok Mon-Fri
+    # Daily checks at 09:00 and 18:00 Bangkok (every day, including weekends)
+    - cron: '0 2 * * *'         # Daily 09:00 Bangkok
+    - cron: '0 11 * * *'        # Daily 18:00 Bangkok
 permissions:
   contents: read
   pages: write
