@@ -148,7 +148,7 @@ function openingCard(op){
   badgeClass='badge-closed';
  }
  const ocscBadge=op.ocscRequirement?.includes('ไม่ต้อง')?`<span class="badge badge-nocsc">✓ ไม่ต้องผ่าน ภาค ก.</span>`:op.ocscRequirement?.includes('ต้องผ่าน')?`<span class="badge badge-ocsc">ภาค ก. ก.พ.</span>`:`<span class="badge">${esc(op.ocscRequirement||'')}</span>`;
- return `<article class="card ${isTracked?'tracked':''}" id="op-${esc(op.id)}">
+ return `<article class="card ${isTracked?'tracked':''} ${st==='closed'?'closed':''}" id="op-${esc(op.id)}">
   <div class="card-head">
    ${logo(op)}
    <div>
@@ -182,8 +182,13 @@ function openingCard(op){
 }
 
 function openings(){
+ function isClosedRecent(op){
+  if(openingStatus(op)!=='closed'||!op.applicationEnd)return false;
+  const diffDays=Math.floor((Date.now()-new Date(op.applicationEnd+'T23:59:59Z').getTime())/86400000);
+  return diffDays>=0&&diffDays<=31;
+ }
  const query=openingsFilter.query.trim().toLowerCase();
- let list=openingsData.slice();
+ let list=openingsData.filter(op=>openingStatus(op)!=='closed'||isClosedRecent(op));
  if(query){
   list=list.filter(op=>
    (op.position||'').toLowerCase().includes(query)||
@@ -194,7 +199,11 @@ function openings(){
   );
  }
  if(openingsFilter.status!=='all'){
-  list=list.filter(op=>openingStatus(op)===openingsFilter.status);
+  if(openingsFilter.status==='closed'){
+   list=list.filter(op=>isClosedRecent(op));
+  }else{
+   list=list.filter(op=>openingStatus(op)===openingsFilter.status);
+  }
  }
  if(openingsFilter.education!=='all'){
   if(openingsFilter.education==='master'){
@@ -229,9 +238,10 @@ function openings(){
  const totalVacancies=openingsData.reduce((acc,o)=>acc+(o.vacancies||0),0);
  const myTrackedCount=openingsData.filter(o=>state.records.some(r=>r.id===o.id||r.id===o.recordId)).length;
 
+ const closedRecentCount=openingsData.filter(o=>isClosedRecent(o)).length;
  const openList=list.filter(o=>openingStatus(o)==='open');
  const upcomingList=list.filter(o=>openingStatus(o)==='upcoming');
- const closedList=list.filter(o=>openingStatus(o)==='closed');
+ const closedList=list.filter(o=>isClosedRecent(o));
 
  return `<div class="page-title">
   <div>
@@ -264,7 +274,7 @@ function openings(){
     <button class="chip ${openingsFilter.status==='all'?'active':''}" data-filter-status="all">ทั้งหมด (${openingsData.length})</button>
     <button class="chip ${openingsFilter.status==='open'?'active':''}" data-filter-status="open">กำลังเปิดรับสมัคร (${openCount})</button>
     <button class="chip ${openingsFilter.status==='upcoming'?'active':''}" data-filter-status="upcoming">กำลังจะเปิดรับ (${upcomingCount})</button>
-    <button class="chip ${openingsFilter.status==='closed'?'active':''}" data-filter-status="closed">เพิ่งปิดรับสมัคร</button>
+    <button class="chip ${openingsFilter.status==='closed'?'active':''}" data-filter-status="closed">เพิ่งปิดรับสมัคร (${closedRecentCount})</button>
    </div>
    <select id="filter-edu" class="filter-select" aria-label="กรองระดับวุฒิ">
     <option value="all" ${openingsFilter.education==='all'?'selected':''}>🎓 ทุกระดับวุฒิ</option>
@@ -296,7 +306,7 @@ function openings(){
  
  ${upcomingList.length?`<div class="section-title"><h2>🟡 กำลังจะเปิดรับสมัครเร็วๆ นี้ (${upcomingList.length})</h2><span class="muted">เตรียมเอกสารและคุณสมบัติล่วงหน้า</span></div><div class="cards">${upcomingList.map(openingCard).join('')}</div>`:''}
 
- ${closedList.length?`<div class="section-title"><h2>⚪ เพิ่งปิดรับสมัคร (${closedList.length})</h2><span class="muted">ใช้ติดตามประกาศรายชื่อผู้มีสิทธิสอบและวันเวลาสอบ</span></div><div class="cards">${closedList.map(openingCard).join('')}</div>`:''}
+ ${closedList.length?`<div class="section-title"><h2>⚪ เพิ่งปิดรับสมัครไม่เกิน 1 เดือน (${closedList.length})</h2><span class="muted">ใช้ติดตามประกาศรายชื่อผู้มีสิทธิสอบและวันเวลาสอบ</span></div><div class="cards">${closedList.map(openingCard).join('')}</div>`:''}
  `;
 }
 

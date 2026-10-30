@@ -14,7 +14,8 @@ PAGE='https://rat12-web.github.io/exam-path-tracker/'
 API='https://api.line.me/v2/bot/message/push'
 STATE=Path(os.environ.get('LINE_STATE_PATH',str(ROOT/'.line-notification-state.json')))
 IMPORTANT=re.compile(r'ขึ้นบัญชี|ยกเลิกบัญชี|เรียก|รายงานตัว|บรรจุ|กำหนด|เลื่อน|ความคืบหน้า|รายชื่อ|ผลการ')
-CALLING_PATTERN=re.compile(r'เรียก(บรรจุ|ตัว|รายงานตัว|เพิ่มเติม)|รายงานตัว|บรรจุและแต่งตั้ง|หนังสือเรียกตัว|เรียกผู้สอบแข่งขันได้')
+CALLING_PATTERN=re.compile(r'เรียก(?:ตัว|บรรจุ|รายงานตัว|เพิ่มเติม|ผู้สอบ|ผู้มีสิทธิ)|หนังสือเรียกตัว|การเรียกตัว|การเรียกรายงานตัว|การเรียกบรรจุ')
+EXCLUDE_RECRUIT_PATTERN=re.compile(r'รับสมัครสอบ|รายชื่อผู้สมัคร|กำหนดวัน.*สถานที่สอบ|แก้ไขรายชื่อ')
 TZ_BANGKOK=timezone(timedelta(hours=7))
 
 def digest(value):
@@ -24,7 +25,7 @@ def fingerprint(item):
  return digest([item.get(k,'') for k in ('title','url','document','published')])
 
 def relevant(item,record,source_ok):
- if record.get('archived') or not source_ok or item.get('evidence')!='official-page':return False
+ if record.get('archived') or record.get('notify') is False or not source_ok or item.get('evidence')!='official-page':return False
  title=item.get('title','')
  if not IMPORTANT.search(title) or not item.get('document') and not re.search(r'/\d{4,}[-/]',item.get('url','')):return False
  source=record['source']
@@ -37,7 +38,7 @@ def relevant(item,record,source_ok):
  return bool(position and position in title or re.search(r'ขึ้นบัญชี|เรียก|รายงานตัว|กำหนด|เลื่อน|ความคืบหน้า|รายชื่อผู้สอบแข่งขันได้',title))
 
 def plan(feed,records,state):
- active={r['id']:r for r in records if not r.get('archived')}
+ active={r['id']:r for r in records if not r.get('archived') and r.get('notify') is not False}
  healthy={s['id'] for s in feed.get('sources',[]) if s.get('status')=='ok'}
  seen=dict(state.get('seen',{}));called=dict(state.get('called',{}));events=[]
  for item in sorted(feed.get('items',[]),key=lambda i:(i.get('firstSeen',''),i.get('id',''))):
@@ -47,7 +48,7 @@ def plan(feed,records,state):
   value=fingerprint(item)
   if seen.get(id)==value:continue
   if relevant(item,record,record['id'] in healthy):
-   is_calling = bool(CALLING_PATTERN.search(item.get('title','')))
+   is_calling = bool(CALLING_PATTERN.search(item.get('title','')) and not EXCLUDE_RECRUIT_PATTERN.search(item.get('title','')))
    header = '🚨 พบประกาศเรียกตัว / รายงานตัว!' if is_calling else '📢 อัปเดตประกาศใหม่'
    clean_title = re.sub(r'^คลิกที่นี่เพื่ออ่าน\s*', '', item.get('title',''))[:280]
    text = (f'{header}\n{record["agency"]}\n{clean_title}\n'
@@ -66,7 +67,7 @@ def plan(feed,records,state):
  return events,seen,called
 
 def check_daily_digest(records,state,now=None,feed=None):
- """Compile daily digest at 09:00 and 18:00 Bangkok time for important dashboard records."""
+ """Compile daily digest at 09:00 and 18:00 Bangkok time for active interested dashboard records."""
  if now is None:now=datetime.now(TZ_BANGKOK)
  today_str=now.strftime('%Y-%m-%d');thai_date_str=now.strftime('%d/%m/%Y');current_hour=now.hour
  digests=dict(state.get('digests',{}))
@@ -78,7 +79,8 @@ def check_daily_digest(records,state,now=None,feed=None):
  if not slot:slot=f'{current_hour:02d}:00'
  digest_key=f'{today_str}_{slot}'
  if digest_key in digests and not force:return None,None,digests
- active=[r for r in records if not r.get('archived')]
+ active=[r for r in records if not r.get('archived') and r.get('notify') is not False]
+ active_ids={r['id'] for r in active}
  lines=[
   f'📋 สรุปสถานะบัญชีหน้าแรก ({slot} น.)',
   f'🗓️ วันที่ {thai_date_str} (ติดตาม {len(active)} หน่วยงาน)',
@@ -87,13 +89,21 @@ def check_daily_digest(records,state,now=None,feed=None):
  calling_found = []
  if feed and isinstance(feed.get('items'), list):
   for item in feed['items']:
-   if CALLING_PATTERN.search(item.get('title','')):
-    calling_found.append(item)
+   if item.get('agencyId') in active_ids:
+    title=item.get('title','')
+    if CALLING_PATTERN.search(title) and not EXCLUDE_RECRUIT_PATTERN.search(title):
+     calling_found.append(item)
  if calling_found:
   lines.append('🚨 ประกาศเรียกตัว / รายงานตัวล่าสุด:')
-  for c in calling_found[:3]:
-   clean_t=re.sub(r'^คลิกที่นี่เพื่ออ่าน\s*','',c.get('title',''))[:60]
-   lines.append(f"   • {c.get('agency','')}: {clean_t}...")
+  seen_titles=set()
+  for c in calling_found:
+   clean_t=re.sub(r'^คลิกที่นี่เพื่ออ่าน\s*','',c.get('title','')).strip()
+   if clean_t in seen_titles:continue
+   seen_titles.add(clean_t)
+   display_t = clean_t if len(clean_t)<=160 else clean_t[:157]+'...'
+   lines.append(f"   • {c.get('agency','')}: {display_t}")
+   if len(seen_titles)>=3:
+    break
   lines.append('─────────────────')
  else:
   lines.append('✓ รายงาน: ยังไม่พบประกาศเรียกตัวใหม่')
@@ -161,7 +171,7 @@ def verify_bot(token,expected):
  print('ยืนยัน LINE OA: '+expected)
 
 def baseline(feed,records):
- return {'seen':{i['id']:fingerprint(i) for i in feed.get('items',[]) if i.get('id')},'called':{r['id']:r.get('called') for r in records if not r.get('archived')},'digests':{}}
+ return {'seen':{i['id']:fingerprint(i) for i in feed.get('items',[]) if i.get('id')},'called':{r['id']:r.get('called') for r in records if not r.get('archived') and r.get('notify') is not False},'digests':{}}
 
 def summary(message):
  print(message)

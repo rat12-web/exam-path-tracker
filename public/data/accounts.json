@@ -281,7 +281,8 @@
         "url": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial",
         "document": ""
       },
-      "hrSource": "https://hr.mhesi.go.th/"
+      "hrSource": "https://hr.mhesi.go.th/",
+      "notify": false
     },
     {
       "id": "doe",
@@ -490,13 +491,14 @@
         "url": "https://ddpm.thaijobjob.com/202605/index.php",
         "document": "news_10-08-2569_09-45-49.pdf"
       },
-      "hrSource": "https://personnel.disaster.go.th/"
+      "hrSource": "https://personnel.disaster.go.th/",
+      "notify": false
     },
     {
       "id": "dol-computer-2569",
       "agency": "กรมที่ดิน",
       "position": "นักวิชาการคอมพิวเตอร์ปฏิบัติการ",
-      "status": "รอสมัคร",
+      "status": "ยกเลิกติดตาม",
       "rank": null,
       "total": null,
       "initial": null,
@@ -552,7 +554,9 @@
         "document": ""
       },
       "logoSource": "https://www.dol.go.th/themes/dol_v1/assets/images/default_logo.webp",
-      "hrSource": "https://personnel.dol.go.th/"
+      "hrSource": "https://personnel.dol.go.th/",
+      "archived": true,
+      "notify": false
     }
   ]
 }

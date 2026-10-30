@@ -124,6 +124,9 @@ function migrate(records,defaults){
  map.set(b.id,cleanRecord(copy));
  }
  const withdrawn=map.get('opsmoac-policy-2569');if(withdrawn)map.set(withdrawn.id,{...withdrawn,status:'ถอนตัว',archived:true,archiveReason:'ไม่ได้ไปสอบ · นำออกตามคำขอ 15 ต.ค. 2569'});
+ const dol=map.get('dol-computer-2569');if(dol)map.set(dol.id,{...dol,status:'ยกเลิกติดตาม',archived:true,notify:false,archiveReason:'ลบออกจากที่สนใจตามคำขอ'});
+ const mh=map.get('mhesi');if(mh)mh.notify=false;
+ const dd=map.get('ddpm-policy-account');if(dd)dd.notify=false;
  return [...map.values()];
 }
 const api={today,expiry,latest,plan,stage,cleanRecord,uniqueRows,mergeRecords,migrate,resolveLogo,OFFICIAL_LOGOS};

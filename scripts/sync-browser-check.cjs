@@ -19,7 +19,7 @@ const {chromium}=require('playwright'),http=require('http'),fs=require('fs/promi
  const browser=await chromium.launch({headless:true,channel:process.env.PLAYWRIGHT_CHANNEL||(process.platform==='win32'?'msedge':undefined)});try{
  const ctx=await browser.newContext(),page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(pageOrigin);
  await page.getByText('☁ ใช้ข้อมูลชุดเดียวกับ ChatGPT Site',{exact:true}).waitFor();const card=page.locator('.card').filter({hasText:'กรมส่งเสริมอุตสาหกรรม'});await page.waitForFunction(()=>document.querySelector('.card')?.textContent.includes('31'));
- assert.match(await card.innerText(),/31/);assert.equal(await page.locator('.card').filter({hasText:'สำนักงานปลัดกระทรวงเกษตรและสหกรณ์'}).count(),0);assert.equal(await page.locator('.card').filter({hasText:'กรมที่ดิน'}).count(),1);
+ assert.match(await card.innerText(),/31/);assert.equal(await page.locator('.card').filter({hasText:'สำนักงานปลัดกระทรวงเกษตรและสหกรณ์'}).count(),0);assert.equal(await page.locator('.card').filter({hasText:'กรมที่ดิน'}).count(),0);
  assert.equal(await page.locator('.low-priority').count(),0);
  await card.getByRole('button',{name:'รายละเอียด / แก้ไข'}).click();assert.equal(await page.locator('textarea[name="note"]').inputValue(),'saved cloud note');await page.locator('[name="rank"]').fill('32');forceConflict=true;await page.locator('#record-form button').click();await page.locator('#modal').waitFor({state:'hidden'});
  for(let i=0;i<100&&records.find(r=>r.id==='diprom').rank!==32;i++)await new Promise(r=>setTimeout(r,100));assert.equal(records.find(r=>r.id==='diprom').rank,32);assert.equal(records.find(r=>r.id==='mhesi').note,'changed in another window');
