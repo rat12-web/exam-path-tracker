@@ -14,6 +14,8 @@ const http=require('node:http'),fs=require('node:fs/promises'),path=require('nod
  assert.match(await doeCard.innerText(), /เลขประจำตัวสอบ/);
  assert.match(await doeCard.innerText(), /นับถอยหลัง/);
  assert(await doeCard.getByRole('link', {name: /PDF ล่าสุด/}).count() > 0, 'DOE must have direct PDF button');
+  assert(await doeCard.locator('.countdown-tube').count() > 0, 'DOE must have countdown tube');
+  assert(await doeCard.locator('.clamp-3').count() > 0, 'DOE announcement must have 3-line clamp');
 
  const niaCard = page.locator('.card').filter({hasText:'สำนักข่าวกรองแห่งชาติ'});
  assert.match(await niaCard.innerText(), /เลขประจำตัวสอบ/);

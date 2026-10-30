@@ -12,14 +12,22 @@ function link(url,label){return `<a href="${esc(safeURL(url))}" target="_blank" 
 function toast(text){$('#toast').textContent=text;$('#toast').hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('#toast').hidden=true,5000)}
 function save(){markPendingChanges();const next={...state,updatedAt:new Date().toISOString()};localStorage.setItem(KEY,JSON.stringify(next));state=next;}
 function notifyStorage(){if(!storageOK)return '<div class="notice warn storage-warning">เบราว์เซอร์นี้ไม่อนุญาตให้บันทึกข้อมูล กรุณาเปิดพื้นที่จัดเก็บก่อนแก้ไข และส่งออกสำรองข้อมูลไว้</div>';return ''}
-function countdownText(targetDate){
- if(!targetDate)return null;
+function countdownInfo(targetDate){
+ if(!targetDate)return {text:'—',color:'#73839a',percent:0,level:'none'};
  const now=new Date();
  const target=new Date(targetDate+'T23:59:59Z');
  const diffDays=Math.ceil((target-now)/(1000*60*60*24));
- if(diffDays>0)return 'อีก '+diffDays+' วัน';
- if(diffDays===0)return 'วันนี้!';
- return 'ถึงกำหนดแล้ว';
+ if(diffDays<0)return {text:'ถึงกำหนดแล้ว',color:'#b91c1c',percent:100,level:'passed'};
+ if(diffDays===0)return {text:'วันนี้!',color:'#dc2626',percent:100,level:'today'};
+ if(diffDays<=3)return {text:'อีก '+diffDays+' วัน',color:'#e11d48',percent:95,level:'urgent'};
+ if(diffDays<=7)return {text:'อีก '+diffDays+' วัน',color:'#ea580c',percent:Math.round(75+((7-diffDays)/7)*18),level:'warning'};
+ if(diffDays<=14)return {text:'อีก '+diffDays+' วัน',color:'#d97706',percent:Math.round(50+((14-diffDays)/7)*20),level:'soon'};
+ if(diffDays<=30)return {text:'อีก '+diffDays+' วัน',color:'#2563eb',percent:Math.round(25+((30-diffDays)/16)*22),level:'month'};
+ return {text:'อีก '+diffDays+' วัน',color:'#059669',percent:Math.max(12,Math.round(25-(diffDays-30)*0.4)),level:'normal'};
+}
+function countdownText(targetDate){
+ const info=countdownInfo(targetDate);
+ return info.text==='—'?null:info.text;
 }
 function latestAnnouncement(r){
  const found=feed.items.find(i=>i.agencyId===r.id);
@@ -32,7 +40,7 @@ function announcementSnippet(r){
  if(!ann)return '';
  return `<div class="source-review" style="border-left-color:#2859d9;background:#f8fafd;margin:10px 0;padding:8px 12px">
   <small style="color:#2859d9;font-weight:bold">📢 ประกาศล่าสุด ${ann.published?`(${date(ann.published)})`:''}</small>
-  <p style="margin:4px 0;font-size:12px;line-height:1.6">${esc(ann.title)}</p>
+  <p class="clamp-3" style="margin:4px 0;font-size:12px;line-height:1.6;cursor:pointer" title="${esc(ann.title)}" onclick="this.classList.toggle('clamp-3')">${esc(ann.title)}</p>
   ${ann.document?`<p class="news-meta" style="margin:2px 0">📄 ไฟล์: ${esc(ann.document)}</p>`:''}
  </div>`;
 }
@@ -44,7 +52,7 @@ function modelText(r,m){if(!r.rank)return '<div class="summary">กรอกล�
 function card(r){
  const m=C.plan(r);
  const isWaiting=C.latest(r)==null;
- const cd=countdownText(r.targetDate);
+ const cd=countdownInfo(r.targetDate);
  const seatDisplay=r.seatNo?esc(r.seatNo):'<span class="muted" style="font-size:13px">กดแก้ไขเพื่อกรอก</span>';
  const targetDisplay=r.targetNote||(r.targetDate?date(r.targetDate):'รอประกาศ');
  const directPdf=r.pdfUrl||(r.sourceReview?.document&&r.sourceReview?.url?(r.sourceReview.url.replace(/\/[^/]*$/, '/')+r.sourceReview.document):null);
@@ -57,7 +65,7 @@ function card(r){
   <div class="metrics">
    <div><small>เลขประจำตัวสอบ</small><strong>${seatDisplay}</strong></div>
    <div><small>กำหนดประกาศ</small><strong style="font-size:14px;line-height:1.4;margin-top:9px">${esc(targetDisplay)}</strong></div>
-   <div><small>นับถอยหลัง</small><strong style="color:#2859d9">${cd||'—'}</strong></div>
+   <div><small>นับถอยหลัง</small><strong style="color:${cd.color};font-size:24px">${cd.text}</strong><div class="countdown-tube" role="progressbar" aria-valuenow="${cd.percent}" aria-valuemin="0" aria-valuemax="100" title="นับถอยหลัง: ${cd.text}"><i class="countdown-fill" style="width:${cd.percent}%;background:${cd.color}"></i></div></div>
   </div>
   <div class="summary">
    ${r.status==='รอสมัคร'?'สถานะส่วนตัว: รอสมัคร · ':''}
