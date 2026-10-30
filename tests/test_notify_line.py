@@ -96,4 +96,14 @@ class NotifyLine(unittest.TestCase):
     self.assertIn('67010045',text)
     self.assertIn('หน้าที่ 3 จาก 15',text)
 
+
+ def test_unlikely_or_notify_false_records_do_not_alert(self):
+  disabled_rec = {'id':'mhesi','agency':'สป.อว.','position':'นักทรัพยากรบุคคลปฏิบัติการ','source':self.record['source'],'called':15,'notify':False,'priorityTier':'low'}
+  feed = {'sources':[{'id':'mhesi','status':'ok'}],'items':[{'id':'item-mhesi','agencyId':'mhesi','title':'ประกาศ สป.อว. เรียกรายงานตัว','url':self.record['source'],'document':'mhesi.pdf','evidence':'official-page','firstSeen':'2026-10-30'}]}
+  events, _, _ = plan(feed, [disabled_rec], {})
+  self.assertEqual(events, [], 'Disabled or low-priority records must produce no alerts')
+  dt_18 = datetime(2026,10,30,18,0,tzinfo=TZ_BANGKOK)
+  digest_text, _, _ = check_daily_digest([disabled_rec], {}, now=dt_18, feed=feed)
+  self.assertNotIn('สป.อว.', digest_text, 'Disabled or low-priority records must not be in daily digest')
+
 if __name__=='__main__':unittest.main()

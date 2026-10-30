@@ -93,7 +93,7 @@ def relevant(item,record,source_ok):
  return bool(position and position in title or re.search(r'ขึ้นบัญชี|เรียก|รายงานตัว|กำหนด|เลื่อน|ความคืบหน้า|รายชื่อผู้สอบแข่งขันได้',title))
 
 def plan(feed,records,state):
- active={r['id']:r for r in records if not r.get('archived') and r.get('notify') is not False}
+ active={r['id']:r for r in records if not r.get('archived') and r.get('notify') is not False and r.get('priorityTier')!='low'}
  healthy={s['id'] for s in feed.get('sources',[]) if s.get('status')=='ok'}
  seen=dict(state.get('seen',{}));called=dict(state.get('called',{}));events=[]
  for item in sorted(feed.get('items',[]),key=lambda i:(i.get('firstSeen',''),i.get('id',''))):
@@ -156,7 +156,7 @@ def check_daily_digest(records,state,now=None,feed=None):
  if not slot:slot=f'{current_hour:02d}:00'
  digest_key=f'{today_str}_{slot}'
  if digest_key in digests and not force:return None,None,digests
- active=[r for r in records if not r.get('archived') and r.get('notify') is not False]
+ active=[r for r in records if not r.get('archived') and r.get('notify') is not False and r.get('priorityTier')!='low']
  active_ids={r['id'] for r in active}
  lines=[
   f'📋 สรุปสถานะบัญชีหน้าแรก ({slot} น.)',
@@ -248,7 +248,7 @@ def verify_bot(token,expected):
  print('ยืนยัน LINE OA: '+expected)
 
 def baseline(feed,records):
- return {'seen':{i['id']:fingerprint(i) for i in feed.get('items',[]) if i.get('id')},'called':{r['id']:r.get('called') for r in records if not r.get('archived') and r.get('notify') is not False},'digests':{}}
+ return {'seen':{i['id']:fingerprint(i) for i in feed.get('items',[]) if i.get('id')},'called':{r['id']:r.get('called') for r in records if not r.get('archived') and r.get('notify') is not False and r.get('priorityTier')!='low'},'digests':{}}
 
 def summary(message):
  print(message)

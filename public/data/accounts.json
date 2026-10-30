@@ -282,7 +282,8 @@
         "document": ""
       },
       "hrSource": "https://hr.mhesi.go.th/",
-      "notify": false
+      "notify": false,
+      "priorityTier": "low"
     },
     {
       "id": "doe",
@@ -492,7 +493,8 @@
         "document": "news_10-08-2569_09-45-49.pdf"
       },
       "hrSource": "https://personnel.disaster.go.th/",
-      "notify": false
+      "notify": false,
+      "priorityTier": "low"
     },
     {
       "id": "dol-computer-2569",

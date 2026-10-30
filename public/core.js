@@ -21,6 +21,7 @@ function plan(r,asOf=today()){
  const horizon=remaining??24,end=rates.map(rate=>Math.min(r.total||1000000,Math.floor((called||0)+rate*horizon)));
  let group=!r.rank||called==null?'unknown':remaining===0?'unlikely':gap===0||end[1]>=r.rank?'possible':end[2]>=r.rank?'watch':'unlikely';
  if(group==='unlikely'&&(r.id==='msdhs'||r.priorityTier==='moderate'||/นักพัฒนาสังคม/.test(r.position||''))){group='moderate';}
+ if(r.priorityTier==='low'||(r.notify===false&&/นักวิเคราะห์นโยบาย|นักทรัพยากรบุคคล/.test(r.position||''))){if(group==='unknown')group='unlikely';}
  return {called,gap,elapsed,remaining,observed,rates,horizon,end,group,progress:r.rank&&called!=null?Math.min(100,called/r.rank*100):null,need:remaining>0&&gap!=null?gap/remaining:null};
 }
 const OFFICIAL_LOGOS=[
