@@ -12,18 +12,89 @@ function link(url,label){return `<a href="${esc(safeURL(url))}" target="_blank" 
 function toast(text){$('#toast').textContent=text;$('#toast').hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('#toast').hidden=true,5000)}
 function save(){markPendingChanges();const next={...state,updatedAt:new Date().toISOString()};localStorage.setItem(KEY,JSON.stringify(next));state=next;}
 function notifyStorage(){if(!storageOK)return '<div class="notice warn storage-warning">เบราว์เซอร์นี้ไม่อนุญาตให้บันทึกข้อมูล กรุณาเปิดพื้นที่จัดเก็บก่อนแก้ไข และส่งออกสำรองข้อมูลไว้</div>';return ''}
-function label(r,m){return m.gap===0?'เรียกถึงลำดับแล้ว':m.remaining===0?'ครบอายุบัญชี':({possible:'ยังพอมีลุ้นตามสมมติฐาน',watch:'ต้องเร่งจังหวะการเรียก',unlikely:'ไม่น่าถึงตามจังหวะที่ใช้',unknown:'กรอกลำดับของฉันเพื่อประเมิน'})[m.group]}
+function countdownText(targetDate){
+ if(!targetDate)return null;
+ const now=new Date();
+ const target=new Date(targetDate+'T23:59:59Z');
+ const diffDays=Math.ceil((target-now)/(1000*60*60*24));
+ if(diffDays>0)return 'อีก '+diffDays+' วัน';
+ if(diffDays===0)return 'วันนี้!';
+ return 'ถึงกำหนดแล้ว';
+}
+function latestAnnouncement(r){
+ const found=feed.items.find(i=>i.agencyId===r.id);
+ if(found)return {title:found.title.replace(/^คลิกที่นี่เพื่ออ่าน\s*/,''),url:found.url,document:found.document,published:found.published};
+ if(r.sourceReview?.note)return {title:r.sourceReview.note,url:r.sourceReview.url||r.source,document:r.sourceReview.document,published:r.sourceReview.checkedAt?.slice(0,10)};
+ return null;
+}
+function announcementSnippet(r){
+ const ann=latestAnnouncement(r);
+ if(!ann)return '';
+ return `<div class="source-review" style="border-left-color:#2859d9;background:#f8fafd;margin:10px 0;padding:8px 12px">
+  <small style="color:#2859d9;font-weight:bold">📢 ประกาศล่าสุด ${ann.published?`(${date(ann.published)})`:''}</small>
+  <p style="margin:4px 0;font-size:12px;line-height:1.6">${esc(ann.title)}</p>
+  ${ann.document?`<p class="news-meta" style="margin:2px 0">📄 ไฟล์: ${esc(ann.document)}</p>`:''}
+ </div>`;
+}
+function label(r,m){
+ if(m.group==="moderate")return "ลุ้นรอบปลายบัญชี (ยังไม่ตัดโอกาส)";return m.gap===0?'เรียกถึงลำดับแล้ว':m.remaining===0?'ครบอายุบัญชี':({possible:'ยังพอมีลุ้นตามสมมติฐาน',watch:'ต้องเร่งจังหวะการเรียก',unlikely:'ไม่น่าถึงตามจังหวะที่ใช้',unknown:'กรอกลำดับของฉันเพื่อประเมิน'})[m.group]}
 function logo(r){const resolved=r.logo||C.resolveLogo(r);if(!resolved)return '<span class="initial">↗</span>';const url=resolved.startsWith('assets/')?new URL(resolved,ASSET_BASE).href:safeURL(resolved);return `<img class="logo" src="${esc(url)}" alt="ตรา ${esc(r.agency)}" loading="lazy" onerror="this.onerror=null;if(this.src.endsWith('.webp')){this.src=this.src.replace(/\\.webp$/,'.png');}else{this.hidden=true;}">`}
 function evidence(r){return `<p class="news-meta">เรียกถึง ${fmt(C.latest(r))} · ${esc(r.calledBasis||'ข้อมูลที่บันทึก')} · วันที่รับข้อมูล ${date(r.calledAt)}</p>`}
 function modelText(r,m){if(!r.rank)return '<div class="summary">กรอกลำดับของฉันเพื่อแสดงระยะห่าง ความคืบหน้า และคาดการณ์ ข้อมูลนี้เก็บในเครื่องของคุณ</div>';return `<div class="summary">${r.expiry?`เหลือประมาณ ${fmt(m.remaining)} เดือน · วันสุดท้ายที่คำนวณ ${date(r.expiry)}`:'อายุไม่เกิน 2 ปี · ยังไม่พบวันเริ่มบัญชี'}<br>${m.need==null?'':`ต้องขยับเฉลี่ย ${fmt(m.need)} ลำดับ/เดือน<br>`}${m.observed==null?'ใช้ความถี่รอบเรียกสมมติทุก 6 / 3 / 2 เดือน':'อัตราที่สังเกตหลังรอบแรก '+fmt(m.observed)+' ลำดับ/เดือน'}<br>ลำดับปลายกรอบ: ช้า ${fmt(m.end[0])} · ฐาน ${fmt(m.end[1])} · เร็ว ${fmt(m.end[2])}</div>`}
-function card(r){const m=C.plan(r);return `<article class="card ${m.group}"><div class="card-head">${logo(r)}<div><h3>${esc(r.position)}</h3><div class="agency">${esc(r.agency)}</div></div></div><span class="pill">${C.latest(r)==null?esc(r.status):label(r,m)}</span><div class="metrics"><div><small>ลำดับของฉัน</small><strong>${fmt(r.rank)}</strong></div><div><small>เรียกถึง</small><strong>${fmt(m.called)}</strong></div><div><small>ระยะห่าง</small><strong>${fmt(m.gap)}</strong></div></div>${m.progress==null?'':`<div class="progress" role="progressbar" aria-label="ความคืบหน้าลำดับ" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${m.progress.toFixed(1)}"><i style="width:${m.progress}%"></i></div><div class="progress-label">ความคืบหน้าลำดับ ${fmt(m.progress)}% · ลำดับที่เรียกถึง ÷ ลำดับของฉัน</div>`}${C.latest(r)!=null?modelText(r,m):`<div class="summary">${r.status==='รอสมัคร'?'สถานะส่วนตัว: รอสมัคร · ':''}${r.dates?.applicationStart&&r.dates?.applicationEnd?`รับสมัคร ${date(r.dates.applicationStart.date)}–${date(r.dates.applicationEnd.date)}${C.today()>=r.dates.applicationStart.date&&C.today()<=r.dates.applicationEnd.date?' · เปิดรับสมัครอยู่':''}<br>`:''}${r.vacancies?`อัตราที่เปิดรับ ${fmt(r.vacancies)} อัตรา<br>`:''}ยังไม่มีบัญชีหรือลำดับที่ยืนยัน ตรวจประกาศต้นฉบับก่อนบันทึกผล</div>`}${evidence(r)}${sourceReview(r)}<div class="card-foot">${link(r.source,'ประกาศทางการ')}<button class="btn" data-detail="${esc(r.id)}">รายละเอียด / แก้ไข</button></div></article>`}
+function card(r){
+ const m=C.plan(r);
+ const isWaiting=C.latest(r)==null;
+ const cd=countdownText(r.targetDate);
+ const seatDisplay=r.seatNo?esc(r.seatNo):'<span class="muted" style="font-size:13px">กดแก้ไขเพื่อกรอก</span>';
+ const targetDisplay=r.targetNote||(r.targetDate?date(r.targetDate):'รอประกาศ');
+ const directPdf=r.pdfUrl||(r.sourceReview?.document&&r.sourceReview?.url?(r.sourceReview.url.replace(/\/[^/]*$/, '/')+r.sourceReview.document):null);
+
+ return `<article class="card ${m.group}">
+  <div class="card-head">${logo(r)}<div><h3>${esc(r.position)}</h3><div class="agency">${esc(r.agency)}</div></div></div>
+  <span class="pill">${isWaiting?esc(r.status):label(r,m)}</span>
+
+  ${isWaiting?`
+  <div class="metrics">
+   <div><small>เลขประจำตัวสอบ</small><strong>${seatDisplay}</strong></div>
+   <div><small>กำหนดประกาศ</small><strong style="font-size:14px;line-height:1.4;margin-top:9px">${esc(targetDisplay)}</strong></div>
+   <div><small>นับถอยหลัง</small><strong style="color:#2859d9">${cd||'—'}</strong></div>
+  </div>
+  <div class="summary">
+   ${r.status==='รอสมัคร'?'สถานะส่วนตัว: รอสมัคร · ':''}
+   ${r.targetNote?`เป้าหมาย: ${esc(r.targetNote)}<br>`:''}
+   ยังไม่มีการขึ้นบัญชีหรือประกาศลำดับ ตรวจประกาศต้นฉบับเพื่อดูรายชื่อ
+  </div>
+  `:`
+  <div class="metrics">
+   <div><small>ลำดับของฉัน</small><strong>${fmt(r.rank)}</strong></div>
+   <div><small>เรียกถึง</small><strong>${fmt(m.called)}</strong></div>
+   <div><small>ระยะห่าง</small><strong>${fmt(m.gap)}</strong></div>
+  </div>
+  ${m.progress==null?'':`<div class="progress" role="progressbar" aria-label="ความคืบหน้าลำดับ" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${m.progress.toFixed(1)}"><i style="width:${m.progress}%"></i></div><div class="progress-label">ความคืบหน้าลำดับ ${fmt(m.progress)}% · ลำดับที่เรียกถึง ÷ ลำดับของฉัน</div>`}
+  ${modelText(r,m)}
+  ${evidence(r)}
+  `}
+
+  ${announcementSnippet(r)}
+  ${sourceReview(r)}
+
+  <div class="card-foot">
+   <div class="actions">
+    ${link(r.source,'ประกาศทางการ')}
+    ${directPdf?`<a href="${esc(safeURL(directPdf))}" target="_blank" rel="noopener noreferrer" class="btn" style="padding:4px 9px;font-size:12px;background:#eef4ff;color:#1e4fb8;border-color:#bfd3fa">📄 PDF ล่าสุด ↗</a>`:''}
+    ${r.hrSource?link(r.hrSource,'เว็บกองการเจ้าหน้าที่'):''}
+   </div>
+   <button class="btn" data-detail="${esc(r.id)}">รายละเอียด / แก้ไข</button>
+  </div>
+ </article>`;
+}
 function feedNotice(){const failed=feed.sources.filter(s=>s.status!=='ok').length,stale=!feed.checkedAt||Date.now()-new Date(feed.checkedAt).getTime()>6*3600000;return `<div class="notice ${failed||feedError||stale?'warn':''}">ตรวจแหล่งประกาศล่าสุด: <b>${stamp(feed.checkedAt)}</b> (${timeAgo(feed.checkedAt)}) · ระบบตรวจอัตโนมัติทุก 1 ชั่วโมง${failed?` · เข้าถึงไม่ได้ ${failed} แหล่ง`:''}${feedError?'<br>'+esc(feedError):''}${stale?'<br>ผลตรวจเก่ากว่า 6 ชั่วโมงหรือยังไม่มีผลล่าสุด กรุณาดูสถานะระบบ':''}<br>ประกาศใหม่ต้องตรวจตำแหน่ง ปีบัญชี และช่วงลำดับก่อนบันทึก ไม่ปรับลำดับจากข้อความที่ยังไม่ยืนยัน ${link('https://github.com/rat12-web/exam-path-tracker/actions','ดูสถานะระบบ')}</div>`}
 function sourceReview(r,full=false){const info=r.sourceReview;if(!info)return '';return `<div class="source-review"><small>ทบทวนประกาศ ${stamp(info.checkedAt)}</small><p>${esc(info.note)}</p>${full?`<p class="news-meta">${esc(info.scope)}${info.document?'<br>เอกสาร: '+esc(info.document):''}</p>${link(info.url,'เปิดแหล่งที่ตรวจ')}`:''}</div>`}
 
 function dashboard(){
  const accounts=state.records.filter(r=>!r.archived&&C.latest(r)!=null),waiting=state.records.filter(r=>!r.archived&&C.latest(r)==null),personal=accounts.filter(r=>r.rank);
- const groups=[['possible','ยังพอมีลุ้น'],['watch','ติดตามใกล้ชิด'],['unknown','บัญชีที่ติดตาม']];
- return `<div class="page-title"><div><h1>ภาพรวมเส้นทางบรรจุ</h1><p class="muted">ติดตามลำดับด้วยข้อมูลที่ตรวจสอบได้ · บัญชีที่คุณสนใจในหน้าแรก</p></div><div class="actions"><button class="btn" data-action="openings-shortcut">✦ ค้นหาตำแหน่งงานเปิดใหม่</button><button class="btn" data-action="import">นำเข้าข้อมูลเดิม</button><button class="btn primary" data-add>＋ เพิ่มสนาม</button></div></div>${notifyStorage()}${!personal.length?'<div class="notice">เริ่มใช้งาน: กดรายละเอียดเพื่อกรอกลำดับของฉัน หรือนำเข้าไฟล์สำรองจากเว็บเดิม ลำดับส่วนตัวเชื่อมจาก ChatGPT Site และไม่เผยแพร่บน GitHub</div>':''}<div class="stats"><div class="stat"><span>ขึ้นบัญชี / ติดตาม</span><strong>${accounts.length}</strong><span>หน่วยงาน</span></div><div class="stat"><span>สอบแล้ว / รอผล</span><strong>${waiting.filter(r=>C.stage(r)==='completed').length}</strong><span>รอกำหนดการ / รอสอบ ${waiting.filter(r=>C.stage(r)==='upcoming').length} · รอสมัคร ${waiting.filter(r=>C.stage(r)==='application').length}</span></div><div class="stat"><span>ตั้งลำดับส่วนตัวแล้ว</span><strong>${personal.length}</strong><span>บัญชีในเครื่องนี้</span></div><div class="stat"><span>ประกาศที่ตรวจพบ</span><strong>${feed.items.length}</strong><span>ตรวจล่าสุด ${timeAgo(feed.checkedAt)}</span></div></div>${feedNotice()}${groups.map(([g,title])=>{const items=accounts.filter(r=>C.plan(r).group===g);return items.length?`<div class="section-title"><h2>${title}</h2><span class="muted">${items.length} บัญชี</span></div><div class="cards">${items.map(card).join('')}</div>`:''}).join('')}${[['completed','สอบแล้ว / รอผล','ยึดสถานะส่วนตัวที่บันทึกไว้'],['upcoming','รอกำหนดการ / รอสอบ','กำหนดการทางการแสดงในรายละเอียด'],['application','รอสมัคร','ยังไม่ได้สมัครตามสถานะส่วนตัว']].map(([stage,title,hint])=>{const rows=waiting.filter(r=>C.stage(r)===stage);return rows.length?`<section class="exam-stage" data-stage="${stage}"><div class="section-title"><h2>${title}</h2><span class="muted">${rows.length} สนาม · ${hint}</span></div><div class="cards">${rows.map(card).join('')}</div></section>`:''}).join('')}${accounts.some(r=>C.plan(r).group==='unlikely')?`<section class="low-priority"><div class="section-title"><h2>โอกาสต่ำ · ไม่น่าถึงตามจังหวะที่ใช้</h2><span class="muted">แยกไว้ท้ายสุด</span></div><div class="cards">${accounts.filter(r=>C.plan(r).group==='unlikely').map(card).join('')}</div></section>`:''}`;
+ const groups=[['possible','ยังพอมีลุ้น'],['moderate','ลุ้นรอบปลายบัญชี · นักพัฒนาสังคม'],['watch','ติดตามใกล้ชิด'],['unknown','บัญชีที่ติดตาม']];
+ return `<div class="page-title"><div><h1>ภาพรวมเส้นทางบรรจุ</h1><p class="muted">ติดตามลำดับด้วยข้อมูลที่ตรวจสอบได้ · บัญชีที่คุณสนใจในหน้าแรก</p></div><div class="actions"><button class="btn" data-action="openings-shortcut">✦ ค้นหาตำแหน่งงานเปิดใหม่</button><button class="btn" data-action="import">นำเข้าข้อมูลเดิม</button><button class="btn primary" data-add>＋ เพิ่มสนาม</button></div></div>${notifyStorage()}${!personal.length?'<div class="notice">เริ่มใช้งาน: กดรายละเอียดเพื่อกรอกลำดับของฉัน หรือนำเข้าไฟล์สำรองจากเว็บเดิม ลำดับส่วนตัวเชื่อมจาก ChatGPT Site และไม่เผยแพร่บน GitHub</div>':''}<div class="stats"><div class="stat"><span>ขึ้นบัญชี / ติดตาม</span><strong>${accounts.length}</strong><span>หน่วยงาน</span></div><div class="stat"><span>สอบแล้ว / รอผล</span><strong>${waiting.filter(r=>C.stage(r)==='completed').length}</strong><span>รอกำหนดการ / รอสอบ ${waiting.filter(r=>C.stage(r)==='upcoming').length} · รอสมัคร ${waiting.filter(r=>C.stage(r)==='application').length}</span></div><div class="stat"><span>ตั้งลำดับส่วนตัวแล้ว</span><strong>${personal.length}</strong><span>บัญชีในเครื่องนี้</span></div><div class="stat"><span>ประกาศที่ตรวจพบ</span><strong>${feed.items.length}</strong><span>ตรวจล่าสุด ${timeAgo(feed.checkedAt)}</span></div></div>${feedNotice()}${groups.map(([g,title])=>{const items=accounts.filter(r=>C.plan(r).group===g);return items.length?`<div class="section-title"><h2>${title}</h2><span class="muted">${items.length} บัญชี</span></div><div class="cards">${items.map(card).join('')}</div>`:''}).join('')}${[['completed','สอบแล้ว / รอผล','ยึดสถานะส่วนตัวที่บันทึกไว้'],['upcoming','รอกำหนดการ / รอสอบ','กำหนดการทางการแสดงในรายละเอียด'],['application','รอสมัคร','ยังไม่ได้สมัครตามสถานะส่วนตัว']].map(([stage,title,hint])=>{const rows=waiting.filter(r=>C.stage(r)===stage);return rows.length?`<section class="exam-stage" data-stage="${stage}"><div class="section-title"><h2>${title}</h2><span class="muted">${rows.length} สนาม · ${hint}</span></div><div class="cards">${rows.map(card).join('')}</div></section>`:''}).join('')}`;
 }
 
 function openingStatus(op){
@@ -234,7 +305,7 @@ function render(){
 }
 
 function openModal(title,html){$('#modal-title').textContent=title;$('#modal-content').innerHTML=html;$('#modal').showModal()}
-function detail(id){const r=state.records.find(r=>r.id===id);if(!r)return;const m=C.plan(r);openModal(r.position,`<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">${logo(r)}<div><p class="muted" style="margin:0">${esc(r.agency)}</p><span class="pill" style="margin:6px 0 0">${label(r,m)}</span></div></div>${modelText(r,m)}${evidence(r)}${roundTimeline(r)}${sourceReview(r,true)}<div class="forecast-grid"><div><small>ช้า · ถึงวันสุดท้าย</small><strong>${fmt(m.end[0])}</strong></div><div><small>ฐาน · ถึงวันสุดท้าย</small><strong>${fmt(m.end[1])}</strong></div><div><small>เร็ว · ถึงวันสุดท้าย</small><strong>${fmt(m.end[2])}</strong></div></div><form id="record-form" data-id="${esc(r.id)}" class="form-grid"><label>ลำดับของฉัน<input type="number" name="rank" min="1" max="${r.total||1000000}" value="${r.rank||''}"></label><label>เรียกถึงลำดับ<input type="number" name="called" min="0" value="${C.latest(r)||''}"></label><label>วันขึ้นบัญชี<input type="date" name="start" value="${esc(r.start)}"></label><label>วันสุดท้ายของบัญชี<input type="date" name="expiry" value="${esc(r.expiry)}"></label><label>ผู้ขึ้นบัญชีทั้งหมด<input type="number" name="total" min="1" value="${r.total||''}"></label><label>จำนวนเรียกครั้งแรก<input type="number" name="initial" min="0" value="${r.initial??''}"></label><label class="full">ลิงก์หลักฐานลำดับล่าสุด<input type="url" name="callSource" value=""></label><label class="full">หมายเหตุส่วนตัว<textarea name="note" maxlength="4000">${esc(r.note)}</textarea></label><div class="full"><p class="news-meta">วันครบ 2 ปีเป็นวันสุดท้ายที่คำนวณจากวันขึ้นบัญชี บัญชีอาจยกเลิกก่อนเมื่อมีบัญชีใหม่ ต้องตรวจประกาศกำกับ</p><p id="form-error" class="error" role="alert"></p><button class="btn primary">บันทึกข้อมูล</button></div></form><div class="panel"><h3>บัญชีเก่า / การยืม</h3><p>${esc(r.researchSummary)}</p>${(r.sources||[]).map(s=>`<div class="news-row">${link(s.url,s.title)}<p class="news-meta">${esc(s.note)}</p></div>`).join('')}<p class="news-meta">ยังไม่ยืนยันการยืมออกจริงของบัญชีปัจจุบัน จึงไม่เพิ่มยอดยืมลงลำดับคาดการณ์</p></div><div class="panel"><h3>ประวัติที่บันทึกในเครื่องนี้</h3>${(r.events||[]).slice().reverse().map(e=>`<p>${date(e.date)} · ถึงลำดับ ${fmt(e.to)} · ${esc(e.level)} ${e.source?link(e.source,'หลักฐาน'):''}<br><small>${esc(e.note)}</small></p>`).join('')||'<p class="muted">ยังไม่มีรายการเพิ่ม</p>'}</div>`)}
+function detail(id){const r=state.records.find(r=>r.id===id);if(!r)return;const m=C.plan(r);openModal(r.position,`<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">${logo(r)}<div><p class="muted" style="margin:0">${esc(r.agency)}</p><span class="pill" style="margin:6px 0 0">${label(r,m)}</span></div></div>${modelText(r,m)}${evidence(r)}${roundTimeline(r)}${sourceReview(r,true)}<div class="forecast-grid"><div><small>ช้า · ถึงวันสุดท้าย</small><strong>${fmt(m.end[0])}</strong></div><div><small>ฐาน · ถึงวันสุดท้าย</small><strong>${fmt(m.end[1])}</strong></div><div><small>เร็ว · ถึงวันสุดท้าย</small><strong>${fmt(m.end[2])}</strong></div></div>${r.targetNote?`<div class="notice" style="margin:12px 0">🎯 กำหนดการคาดหมาย: <b>${esc(r.targetNote)}</b> (${countdownText(r.targetDate)||'ตามประกาศ'})</div>`:''}<form id="record-form" data-id="${esc(r.id)}" class="form-grid"><label>เลขประจำตัวสอบ<input type="text" name="seatNo" maxlength="50" placeholder="เช่น 67010023" value="${esc(r.seatNo||'')}"></label><label>ลำดับของฉัน<input type="number" name="rank" min="1" max="${r.total||1000000}" value="${r.rank||''}"></label><label>เรียกถึงลำดับ<input type="number" name="called" min="0" value="${C.latest(r)||''}"></label><label>วันขึ้นบัญชี<input type="date" name="start" value="${esc(r.start)}"></label><label>วันสุดท้ายของบัญชี<input type="date" name="expiry" value="${esc(r.expiry)}"></label><label>ผู้ขึ้นบัญชีทั้งหมด<input type="number" name="total" min="1" value="${r.total||''}"></label><label>จำนวนเรียกครั้งแรก<input type="number" name="initial" min="0" value="${r.initial??''}"></label><label class="full">ลิงก์หลักฐานลำดับล่าสุด<input type="url" name="callSource" value=""></label><label class="full">หมายเหตุส่วนตัว<textarea name="note" maxlength="4000">${esc(r.note)}</textarea></label><div class="full"><p class="news-meta">วันครบ 2 ปีเป็นวันสุดท้ายที่คำนวณจากวันขึ้นบัญชี บัญชีอาจยกเลิกก่อนเมื่อมีบัญชีใหม่ ต้องตรวจประกาศกำกับ</p><p id="form-error" class="error" role="alert"></p><button class="btn primary">บันทึกข้อมูล</button></div></form><div class="panel"><h3>บัญชีเก่า / การยืม</h3><p>${esc(r.researchSummary)}</p>${(r.sources||[]).map(s=>`<div class="news-row">${link(s.url,s.title)}<p class="news-meta">${esc(s.note)}</p></div>`).join('')}<p class="news-meta">ยังไม่ยืนยันการยืมออกจริงของบัญชีปัจจุบัน จึงไม่เพิ่มยอดยืมลงลำดับคาดการณ์</p></div><div class="panel"><h3>ประวัติที่บันทึกในเครื่องนี้</h3>${(r.events||[]).slice().reverse().map(e=>`<p>${date(e.date)} · ถึงลำดับ ${fmt(e.to)} · ${esc(e.level)} ${e.source?link(e.source,'หลักฐาน'):''}<br><small>${esc(e.note)}</small></p>`).join('')||'<p class="muted">ยังไม่มีรายการเพิ่ม</p>'}</div>`)}
 function download(name,text,type='application/json'){const url=URL.createObjectURL(new Blob([text],{type})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000)}
 function db(){return new Promise((resolve,reject)=>{const req=indexedDB.open('exam-path-documents',1);req.onupgradeneeded=()=>req.result.createObjectStore('documents',{keyPath:'id'});req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(Error('เปิดพื้นที่เก็บเอกสารไม่ได้'))})}
 async function dbOp(mode,op){const database=await db();try{return await new Promise((resolve,reject)=>{const tx=database.transaction('documents',mode),req=op(tx.objectStore('documents'));tx.oncomplete=()=>resolve(req.result);tx.onerror=()=>reject(Error('บันทึกเอกสารไม่สำเร็จ พื้นที่อาจเต็ม'));tx.onabort=()=>reject(Error('ยกเลิกการบันทึกเอกสาร'))})}finally{database.close()}}

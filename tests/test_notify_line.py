@@ -65,4 +65,18 @@ class NotifyLine(unittest.TestCase):
   def rejected(req,timeout):raise HTTPError(req.full_url,401,'private body with credentials',Message(),None)
   with self.assertRaisesRegex(RuntimeError,'HTTP 401'):push('token','U'+'a'*32,'news','event',opener=rejected)
 
+
+ def test_calling_announcement_prominently_alerts_and_shows_in_digest(self):
+  calling_item = {'id':'call-1','agencyId':'a','agency':'Agency','title':'ประกาศสำนักงาน เรื่อง เรียกผู้สอบแข่งขันได้มารายงานตัวเพื่อบรรจุแต่งตั้ง','url':self.record['source'],'document':'calling.pdf','evidence':'official-page','firstSeen':'2026-10-30'}
+  feed = {'sources':[{'id':'a','status':'ok'}],'items':[calling_item]}
+  events, _, _ = plan(feed, [self.record], {})
+  self.assertEqual(len(events), 1)
+  self.assertIn('พบประกาศเรียกตัว / รายงานตัว', events[0]['text'])
+
+  dt_18 = datetime(2026,10,30,18,0,tzinfo=TZ_BANGKOK)
+  pending_record = {'id':'doe','agency':'กรมการจัดหางาน','position':'นักจัดการงานทั่วไป','called':None,'status':'รอผลสอบ','targetDate':'2026-10-31','targetNote':'ประกาศผลภายในเดือนตุลาคม 2569'}
+  digest_text, key, _ = check_daily_digest([self.record, pending_record], {}, now=dt_18, feed=feed)
+  self.assertIn('ประกาศเรียกตัว / รายงานตัวล่าสุด', digest_text)
+  self.assertIn('เป้าหมาย: ประกาศผลภายในเดือนตุลาคม 2569', digest_text)
+
 if __name__=='__main__':unittest.main()

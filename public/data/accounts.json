@@ -74,7 +74,8 @@
         "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
         "url": "https://dip.thaijobjob.com/2026062/index.php",
         "document": "news_10-09-2569_15-40-15.pdf"
-      }
+      },
+      "hrSource": "https://personnel.dip.go.th/"
     },
     {
       "id": "msdhs",
@@ -164,7 +165,9 @@
         "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
         "url": "https://m-society.thaijobjob.com/20251001/index.php",
         "document": "m-society20251001_16.pdf"
-      }
+      },
+      "hrSource": "https://personnel.m-society.go.th/",
+      "priorityTier": "moderate"
     },
     {
       "id": "nia",
@@ -176,7 +179,7 @@
       "initial": null,
       "start": "",
       "expiry": "",
-      "source": "https://nia.thaijobjob.com/",
+      "source": "https://nia.thaijobjob.com/202603/index.php",
       "logo": "assets/nia.png",
       "called": null,
       "calledAt": "",
@@ -197,7 +200,12 @@
         "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
         "url": "https://nia.thaijobjob.com/202603/index.php",
         "document": "news_08-07-2569_13-49-25.pdf"
-      }
+      },
+      "pdfUrl": "https://nia.thaijobjob.com/202603/news_08-07-2569_13-49-25.pdf",
+      "targetDate": "2026-10-31",
+      "targetNote": "ประกาศผลภายในเดือนตุลาคม 2569",
+      "hrSource": "https://www.nia.go.th/",
+      "seatNo": null
     },
     {
       "id": "mhesi",
@@ -272,7 +280,8 @@
         "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
         "url": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial",
         "document": ""
-      }
+      },
+      "hrSource": "https://hr.mhesi.go.th/"
     },
     {
       "id": "doe",
@@ -284,7 +293,7 @@
       "initial": null,
       "start": "",
       "expiry": "",
-      "source": "https://doe.thaijobjob.com/",
+      "source": "https://doe.thaijobjob.com/202605/index.php",
       "logo": "assets/doe.png",
       "called": null,
       "calledAt": "",
@@ -307,7 +316,12 @@
         "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
         "url": "https://doe.thaijobjob.com/202605/index.php",
         "document": "news_04-09-2569_17-24-16.pdf"
-      }
+      },
+      "pdfUrl": "https://doe.thaijobjob.com/202605/news_04-09-2569_17-24-16.pdf",
+      "targetDate": "2026-10-31",
+      "targetNote": "ประกาศผลภายในเดือนตุลาคม 2569",
+      "hrSource": "https://personnel.doe.go.th/",
+      "seatNo": null
     },
     {
       "id": "moj",
@@ -319,7 +333,7 @@
       "initial": null,
       "start": "",
       "expiry": "",
-      "source": "https://moj.thaijobjob.com/",
+      "source": "https://moj.thaijobjob.com/202605/index.php",
       "logo": "assets/moj.png",
       "called": null,
       "calledAt": "",
@@ -342,7 +356,12 @@
         "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
         "url": "https://moj.thaijobjob.com/202605/index.php",
         "document": "news_12-10-2569_09-51-51.pdf"
-      }
+      },
+      "pdfUrl": "https://moj.thaijobjob.com/202605/news_12-10-2569_09-51-51.pdf",
+      "targetDate": "2026-11-06",
+      "targetNote": "ประกาศขึ้นบัญชีภายใน 6 พ.ย. 2569 (ตามประกาศเลื่อน)",
+      "hrSource": "https://hr.moj.go.th/",
+      "seatNo": null
     },
     {
       "id": "opsmoac-policy-2569",
@@ -395,7 +414,12 @@
         "url": "https://ombudsman.thaijobjob.com/202606/index.php",
         "document": "news_28-09-2569_16-40-03.pdf"
       },
-      "logoSource": "https://www.ombudsman.go.th/new/wp-content/uploads/2022/07/Logo-omb.svg"
+      "logoSource": "https://www.ombudsman.go.th/new/wp-content/uploads/2022/07/Logo-omb.svg",
+      "pdfUrl": "https://ombudsman.thaijobjob.com/202606/news_28-09-2569_16-40-03.pdf",
+      "targetDate": "2026-11-30",
+      "targetNote": "ประกาศกำหนดการสอบ/รายชื่อ ภายในเดือน พ.ย. 2569",
+      "hrSource": "https://www.ombudsman.go.th/",
+      "seatNo": null
     },
     {
       "id": "ddpm-policy-account",
@@ -465,7 +489,8 @@
         "scope": "ตรวจรายการประกาศทางการ ไม่ได้ยืนยันเนื้อหา PDF ใหม่ทุกรายการ",
         "url": "https://ddpm.thaijobjob.com/202605/index.php",
         "document": "news_10-08-2569_09-45-49.pdf"
-      }
+      },
+      "hrSource": "https://personnel.disaster.go.th/"
     },
     {
       "id": "dol-computer-2569",
@@ -526,7 +551,8 @@
         "url": "https://dol.thaijobjob.com/",
         "document": ""
       },
-      "logoSource": "https://www.dol.go.th/themes/dol_v1/assets/images/default_logo.webp"
+      "logoSource": "https://www.dol.go.th/themes/dol_v1/assets/images/default_logo.webp",
+      "hrSource": "https://personnel.dol.go.th/"
     }
   ]
 }

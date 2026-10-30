@@ -37,3 +37,42 @@ test('openings catalog has 29 unique single-position items with 100% valid logo 
   assert(logo&&logo.startsWith('assets/'),'Must resolve to official asset logo: '+op.agency);
  }
 });
+
+test('msdhs is promoted to moderate instead of unlikely and campaign links are direct',()=>{
+ const msdhs = records.find(r=>r.id==='msdhs');
+ assert.equal(msdhs.priorityTier, 'moderate');
+ const slowPlan = C.plan({...msdhs, rank: 999}, '2026-10-30');
+ assert.equal(slowPlan.group, 'moderate');
+ const regularSlow = C.plan({...records.find(r=>r.id==='diprom'), rank: 999}, '2026-10-30');
+ assert.equal(regularSlow.group, 'unlikely');
+
+ const doe = records.find(r=>r.id==='doe');
+ assert(doe.source.includes('202605'), 'DOE campaign must be direct to May 2569');
+ assert(doe.pdfUrl.endsWith('.pdf'), 'DOE must have direct PDF link');
+ assert(doe.hrSource.includes('doe.go.th'), 'DOE must have HR division source');
+
+ const nia = records.find(r=>r.id==='nia');
+ assert(nia.source.includes('202603'), 'NIA campaign must be direct to March 2569');
+ assert(nia.pdfUrl.endsWith('.pdf'), 'NIA must have direct PDF link');
+ assert(nia.hrSource.includes('nia.go.th'), 'NIA must have HR division source');
+
+ const moj = records.find(r=>r.id==='moj');
+ assert.equal(moj.targetDate, '2026-11-06');
+ assert(moj.pdfUrl.endsWith('.pdf'));
+
+ const cleaned = C.cleanRecord({
+  id: 'test',
+  agency: 'Test Agency',
+  position: 'Test Pos',
+  seatNo: '67010023',
+  targetDate: '2026-10-31',
+  targetNote: 'ประกาศผลภายในเดือนตุลาคม',
+  pdfUrl: 'https://example.com/test.pdf',
+  hrSource: 'https://example.com/hr'
+ });
+ assert.equal(cleaned.seatNo, '67010023');
+ assert.equal(cleaned.targetDate, '2026-10-31');
+ assert.equal(cleaned.targetNote, 'ประกาศผลภายในเดือนตุลาคม');
+ assert.equal(cleaned.pdfUrl, 'https://example.com/test.pdf');
+ assert.equal(cleaned.hrSource, 'https://example.com/hr');
+});

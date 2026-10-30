@@ -8,6 +8,22 @@ const http=require('node:http'),fs=require('node:fs/promises'),path=require('nod
  const page=await browser.newPage({viewport:{width:1366,height:950}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(url);await page.locator('.card').nth(8).waitFor();await fs.mkdir('reports',{recursive:true});await page.screenshot({path:'reports/public-preview.png'});assert.equal(await page.locator('.card').count(),9);assert.equal(await page.locator('.card').filter({hasText:'กรมที่ดิน'}).count(),1);assert.equal(await page.locator('.card').filter({hasText:'สำนักงานปลัดกระทรวงเกษตรและสหกรณ์'}).count(),0);
  assert.equal(await page.locator('[data-stage="completed"] .card').count(),3);assert.equal(await page.locator('[data-stage="upcoming"] .card').count(),1);assert.equal(await page.locator('[data-stage="application"] .card').count(),1);
+
+ // Verify countdown and seat metrics for waiting cards (doe, nia, moj)
+ const doeCard = page.locator('.card').filter({hasText:'กรมการจัดหางาน'});
+ assert.match(await doeCard.innerText(), /เลขประจำตัวสอบ/);
+ assert.match(await doeCard.innerText(), /นับถอยหลัง/);
+ assert(await doeCard.getByRole('link', {name: /PDF ล่าสุด/}).count() > 0, 'DOE must have direct PDF button');
+
+ const niaCard = page.locator('.card').filter({hasText:'สำนักข่าวกรองแห่งชาติ'});
+ assert.match(await niaCard.innerText(), /เลขประจำตัวสอบ/);
+ assert.match(await niaCard.innerText(), /นับถอยหลัง/);
+ assert(await niaCard.getByRole('link', {name: /PDF ล่าสุด/}).count() > 0, 'NIA must have direct PDF button');
+
+ const mojCard = page.locator('.card').filter({hasText:'สำนักงานปลัดกระทรวงยุติธรรม'});
+ assert.match(await mojCard.innerText(), /6 พ\.ย\./);
+ assert(await mojCard.getByRole('link', {name: /PDF ล่าสุด/}).count() > 0, 'MOJ must have direct PDF button');
+
  for(const agency of ['กรมที่ดิน','สำนักงานผู้ตรวจการแผ่นดิน']){const img=page.locator('.card').filter({hasText:agency}).locator('img.logo');await img.scrollIntoViewIfNeeded();await page.waitForFunction(name=>{const img=[...document.querySelectorAll('img.logo')].find(i=>i.alt.includes(name));return img?.complete&&img.naturalWidth>0},agency);assert.equal(await img.isVisible(),true)}
  const dip=page.locator('.card').filter({hasText:'กรมส่งเสริมอุตสาหกรรม'});await dip.getByRole('button',{name:'รายละเอียด / แก้ไข'}).click();
  await page.locator('[name="rank"]').fill('30');await page.locator('[name="called"]').fill('20');await page.locator('#record-form button[type="submit"],#record-form button').click();await page.locator('#modal').waitFor({state:'hidden'});
@@ -22,7 +38,7 @@ const http=require('node:http'),fs=require('node:fs/promises'),path=require('nod
  const allOpeningsCount = await page.locator('#main .card').count();
  assert.equal(allOpeningsCount, 29, 'Must display exactly 29 standalone position cards');
  
- // Verify Logo Size (48x48px Nemotron standard)
+ // Verify Logo Size (48x48px standard)
  const logoBox = await page.locator('#main .card .logo').first().boundingBox();
  assert.equal(Math.round(logoBox.width), 48, 'Logo width must be 48px');
  assert.equal(Math.round(logoBox.height), 48, 'Logo height must be 48px');
@@ -56,6 +72,6 @@ const http=require('node:http'),fs=require('node:fs/promises'),path=require('nod
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth),'mobile must not overflow horizontally');
  await page.screenshot({path:'reports/mobile.png',fullPage:true});
  assert.deepEqual(errors,[]);
- console.log('Browser checks passed: 29 individual position cards, 48px balanced logos, education filtering (bachelor/diploma), tracking to dashboard, mobile responsiveness.');
+ console.log('Browser checks passed: 29 individual position cards, 48px balanced logos, seat numbers, countdowns, direct campaign & PDF links, education filtering, tracking to dashboard, mobile responsiveness.');
  }finally{await browser.close();await new Promise(r=>server.close(r));}
 })().catch(e=>{console.error(e);process.exitCode=1});

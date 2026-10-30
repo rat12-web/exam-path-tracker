@@ -14,6 +14,7 @@ PAGE='https://rat12-web.github.io/exam-path-tracker/'
 API='https://api.line.me/v2/bot/message/push'
 STATE=Path(os.environ.get('LINE_STATE_PATH',str(ROOT/'.line-notification-state.json')))
 IMPORTANT=re.compile(r'ขึ้นบัญชี|ยกเลิกบัญชี|เรียก|รายงานตัว|บรรจุ|กำหนด|เลื่อน|ความคืบหน้า|รายชื่อ|ผลการ')
+CALLING_PATTERN=re.compile(r'เรียก(บรรจุ|ตัว|รายงานตัว|เพิ่มเติม)|รายงานตัว|บรรจุและแต่งตั้ง|หนังสือเรียกตัว|เรียกผู้สอบแข่งขันได้')
 TZ_BANGKOK=timezone(timedelta(hours=7))
 
 def digest(value):
@@ -46,9 +47,13 @@ def plan(feed,records,state):
   value=fingerprint(item)
   if seen.get(id)==value:continue
   if relevant(item,record,record['id'] in healthy):
-   text=('มีประกาศใหม่ / ประกาศเปลี่ยนแปลง\n'+record['agency']+'\n'+item.get('title','')[:700]
-    +'\n'+('เอกสาร: '+item['document']+'\n' if item.get('document') else '')
-    +'รอตรวจตำแหน่งและปีบัญชี ยังไม่ยืนยันลำดับเรียกใหม่\n'+item['url']+'\nดูบัญชี: '+PAGE)
+   is_calling = bool(CALLING_PATTERN.search(item.get('title','')))
+   header = '🚨 พบประกาศเรียกตัว / รายงานตัว!' if is_calling else '📢 อัปเดตประกาศใหม่'
+   clean_title = re.sub(r'^คลิกที่นี่เพื่ออ่าน\s*', '', item.get('title',''))[:280]
+   text = (f'{header}\n{record["agency"]}\n{clean_title}\n'
+    + (f'เอกสาร: {item["document"]}\n' if item.get('document') else '')
+    + 'รอตรวจตำแหน่งและปีบัญชี ยังไม่ยืนยันลำดับเรียกใหม่\n'
+    + f'{item["url"]}\nดูบัญชี: {PAGE}')
    events.append({'key':'news:'+id+':'+value,'text':text,'seen':{id:value}})
   else:seen[id]=value
  for id,record in active.items():
@@ -60,8 +65,8 @@ def plan(feed,records,state):
   elif id not in called:called[id]=current
  return events,seen,called
 
-def check_daily_digest(records,state,now=None):
- """Compile daily digest at 09:00 and 18:00 Bangkok time for all dashboard records."""
+def check_daily_digest(records,state,now=None,feed=None):
+ """Compile daily digest at 09:00 and 18:00 Bangkok time for important dashboard records."""
  if now is None:now=datetime.now(TZ_BANGKOK)
  today_str=now.strftime('%Y-%m-%d');thai_date_str=now.strftime('%d/%m/%Y');current_hour=now.hour
  digests=dict(state.get('digests',{}))
@@ -79,15 +84,46 @@ def check_daily_digest(records,state,now=None):
   f'🗓️ วันที่ {thai_date_str} (ติดตาม {len(active)} หน่วยงาน)',
   '─────────────────'
  ]
+ calling_found = []
+ if feed and isinstance(feed.get('items'), list):
+  for item in feed['items']:
+   if CALLING_PATTERN.search(item.get('title','')):
+    calling_found.append(item)
+ if calling_found:
+  lines.append('🚨 ประกาศเรียกตัว / รายงานตัวล่าสุด:')
+  for c in calling_found[:3]:
+   clean_t=re.sub(r'^คลิกที่นี่เพื่ออ่าน\s*','',c.get('title',''))[:60]
+   lines.append(f"   • {c.get('agency','')}: {clean_t}...")
+  lines.append('─────────────────')
+ else:
+  lines.append('✓ รายงาน: ยังไม่พบประกาศเรียกตัวใหม่')
+  lines.append('─────────────────')
+
  for idx,r in enumerate(active,1):
   agency=r.get('agency','หน่วยงาน')
   pos=r.get('position','')
   called=r.get('called')
-  called_text=f'ลำดับที่ {called}' if called is not None else 'รอข้อมูล'
   status=r.get('status','รอเรียก')
+  target_note=r.get('targetNote')
+  target_date=r.get('targetDate')
+  if called is not None:
+   status_line=f'เรียกถึง: ลำดับที่ {called} | สถานะ: {status}'
+  elif target_date:
+   try:
+    cd_diff=(datetime.strptime(target_date, '%Y-%m-%d').date() - now.date()).days
+    cd_str=f'อีก {cd_diff} วัน' if cd_diff > 0 else 'ถึงกำหนดแล้ว' if cd_diff == 0 else 'เลยกำหนด'
+   except Exception:
+    cd_str='รอประกาศ'
+   status_line=f'เป้าหมาย: {target_note or target_date} ({cd_str})'
+  elif target_note:
+   status_line=f'เป้าหมาย: {target_note}'
+  else:
+   status_line=f'สถานะ: {status}'
+
   lines.append(f'{idx}. {agency}')
   lines.append(f'   • {pos}')
-  lines.append(f'   • เรียกถึง: {called_text} | สถานะ: {status}')
+  lines.append(f'   • {status_line}')
+
  lines.extend(['─────────────────',f'🌐 ดูรายละเอียดทั้งหมด: {PAGE}'])
  digests[digest_key]=datetime.now(timezone.utc).isoformat()
  return '\n'.join(lines),'digest:'+digest_key,digests
@@ -158,7 +194,7 @@ def main():
   push(token,recipient,'ทดสอบแจ้งเตือนเส้นทางบรรจุ\nระบบส่งผ่าน LINE OA เข้าแชตส่วนตัว\n'+PAGE,'test:'+os.environ.get('GITHUB_RUN_ID','manual'))
 
  # 1. Daily digest at 09:00 and 18:00
- digest_text,digest_key,new_digests=check_daily_digest(records,state)
+ digest_text,digest_key,new_digests=check_daily_digest(records,state,feed=feed)
  if digest_text:
   verify_bot(token,os.environ.get('LINE_EXPECTED_BOT_NAME',''))
   push(token,recipient,digest_text,digest_key)

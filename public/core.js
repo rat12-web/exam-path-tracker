@@ -19,7 +19,8 @@ function plan(r,asOf=today()){
  const observed=elapsed>=3&&called!=null?Math.max(0,called-(r.initial||0))/elapsed:null;
  const rates=observed==null?[(r.initial||0)/6,(r.initial||0)/3,(r.initial||0)/2]:[observed*.5,observed,observed*1.5];
  const horizon=remaining??24,end=rates.map(rate=>Math.min(r.total||1000000,Math.floor((called||0)+rate*horizon)));
- const group=!r.rank||called==null?'unknown':remaining===0?'unlikely':gap===0||end[1]>=r.rank?'possible':end[2]>=r.rank?'watch':'unlikely';
+ let group=!r.rank||called==null?'unknown':remaining===0?'unlikely':gap===0||end[1]>=r.rank?'possible':end[2]>=r.rank?'watch':'unlikely';
+ if(group==='unlikely'&&(r.id==='msdhs'||r.priorityTier==='moderate'||/นักพัฒนาสังคม/.test(r.position||''))){group='moderate';}
  return {called,gap,elapsed,remaining,observed,rates,horizon,end,group,progress:r.rank&&called!=null?Math.min(100,called/r.rank*100):null,need:remaining>0&&gap!=null?gap/remaining:null};
 }
 const OFFICIAL_LOGOS=[
