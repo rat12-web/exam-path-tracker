@@ -200,6 +200,45 @@ def refresh():
  if summary:=__import__('os').environ.get('GITHUB_STEP_SUMMARY'):
   with open(summary,'a',encoding='utf-8') as f:
    f.write(f'## Announcement refresh\n\nChecked at {now}: {ok}/{len(statuses)} sources readable; {len(found)} announcements.\n\nNo appointment ranks were inferred. Failed sources are shown on the website.\n')
+ check_schedule_transition()
  return result
+
+def check_schedule_transition(now_dt=None, wf_path=None, auto_commit=True):
+ """After 2026-11-06 Bangkok time, automatically transition workflow schedule to every 4 hours."""
+ if now_dt is None:
+  from datetime import timedelta
+  now_dt = datetime.now(timezone(timedelta(hours=7)))
+ today_str = now_dt.strftime('%Y-%m-%d')
+ if today_str > '2026-11-06':
+  wf_path = Path(wf_path) if wf_path else ROOT/'.github/workflows/pages.yml'
+  if wf_path.exists():
+   content = wf_path.read_text(encoding='utf-8')
+   if '*/10 1-13' in content:
+    print(f'Bangkok date is {today_str} (after 2026-11-06). Auto-transitioning pages.yml schedule to every 4 hours...')
+    old_sched = re.search(r'  schedule:\n(?:    .*\n)+', content)
+    new_sched = (
+     "  schedule:\n"
+     "    # Regular 4-hour check (transitioned automatically after 2026-11-06)\n"
+     "    - cron: '0 1,5,9,13 * * *' # 08:00, 12:00, 16:00, 20:00 Bangkok every day\n"
+     "    # Daily checks at 09:00 and 18:00 Bangkok\n"
+     "    - cron: '0 2 * * *'         # Daily 09:00 Bangkok\n"
+     "    - cron: '0 11 * * *'        # Daily 18:00 Bangkok\n"
+    )
+    if old_sched:
+     content = content[:old_sched.start()] + new_sched + content[old_sched.end():]
+     wf_path.write_text(content, encoding='utf-8')
+     if auto_commit:
+      try:
+       import subprocess
+       subprocess.run(['git', 'config', 'user.name', 'github-actions[bot]'], check=False)
+       subprocess.run(['git', 'config', 'user.email', 'github-actions[bot]@users.noreply.github.com'], check=False)
+       subprocess.run(['git', 'add', str(wf_path)], check=False)
+       subprocess.run(['git', 'commit', '-m', 'chore: auto-transition pages schedule to every 4 hours after 2026-11-06'], check=False)
+       subprocess.run(['git', 'push', 'origin', 'main'], check=False)
+       print('Committed and pushed pages.yml 4-hour schedule transition!')
+      except Exception as e:
+       print(f'Notice: could not auto-commit workflow: {e}')
+     return True
+ return False
 
 if __name__=='__main__':refresh()
