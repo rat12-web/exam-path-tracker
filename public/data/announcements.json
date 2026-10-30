@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-15T13:15:28.213996+00:00",
-  "schedule": "every 6 hours",
+  "checkedAt": "2026-10-30T07:18:44.126325+00:00",
+  "schedule": "every 10 minutes (waiting agencies)",
   "sources": [
     {
       "id": "diprom",
@@ -24,10 +24,10 @@
     {
       "id": "nia",
       "agency": "สำนักข่าวกรองแห่งชาติ",
-      "url": "https://nia.thaijobjob.com/",
-      "checkedAt": "2026-10-15T13:15:28.213996+00:00",
+      "url": "https://nia.thaijobjob.com/202603/index.php",
+      "checkedAt": "2026-10-30T07:18:44.126325+00:00",
       "status": "ok",
-      "lastSuccess": "2026-10-15T13:15:28.213996+00:00",
+      "lastSuccess": "2026-10-30T07:18:44.126325+00:00",
       "message": "อ่านรายการประกาศได้ 18 รายการ ยังต้องตรวจตำแหน่งและปีบัญชี"
     },
     {
@@ -42,28 +42,28 @@
     {
       "id": "doe",
       "agency": "กรมการจัดหางาน",
-      "url": "https://doe.thaijobjob.com/",
-      "checkedAt": "2026-10-15T13:15:28.213996+00:00",
+      "url": "https://doe.thaijobjob.com/202605/index.php",
+      "checkedAt": "2026-10-30T07:18:44.126325+00:00",
       "status": "ok",
-      "lastSuccess": "2026-10-15T13:15:28.213996+00:00",
+      "lastSuccess": "2026-10-30T07:18:44.126325+00:00",
       "message": "อ่านรายการประกาศได้ 29 รายการ ยังต้องตรวจตำแหน่งและปีบัญชี"
     },
     {
       "id": "moj",
       "agency": "สำนักงานปลัดกระทรวงยุติธรรม",
-      "url": "https://moj.thaijobjob.com/",
-      "checkedAt": "2026-10-15T13:15:28.213996+00:00",
+      "url": "https://moj.thaijobjob.com/202605/index.php",
+      "checkedAt": "2026-10-30T07:18:44.126325+00:00",
       "status": "ok",
-      "lastSuccess": "2026-10-15T13:15:28.213996+00:00",
+      "lastSuccess": "2026-10-30T07:18:44.126325+00:00",
       "message": "อ่านรายการประกาศได้ 77 รายการ ยังต้องตรวจตำแหน่งและปีบัญชี"
     },
     {
       "id": "ombudsman-academic-2569",
       "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
       "url": "https://ombudsman.thaijobjob.com/202606/index.php",
-      "checkedAt": "2026-10-15T13:15:28.213996+00:00",
+      "checkedAt": "2026-10-30T07:18:44.126325+00:00",
       "status": "ok",
-      "lastSuccess": "2026-10-15T13:15:28.213996+00:00",
+      "lastSuccess": "2026-10-30T07:18:44.126325+00:00",
       "message": "อ่านรายการประกาศได้ 19 รายการ ยังต้องตรวจตำแหน่งและปีบัญชี"
     },
     {
@@ -97,7 +97,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -125,7 +125,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -181,7 +181,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -195,7 +195,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -209,7 +209,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -223,7 +223,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -237,7 +237,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -251,7 +251,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -265,7 +265,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -279,7 +279,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -293,7 +293,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -307,7 +307,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -321,7 +321,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -335,7 +335,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -349,7 +349,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -363,7 +363,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -377,7 +377,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -391,7 +391,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -405,7 +405,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -419,7 +419,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -433,7 +433,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -447,7 +447,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -461,7 +461,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -559,7 +559,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -573,7 +573,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -587,7 +587,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -601,7 +601,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -699,7 +699,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -811,7 +811,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -937,7 +937,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -951,7 +951,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -965,7 +965,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1091,7 +1091,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1105,7 +1105,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1119,7 +1119,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1133,7 +1133,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1147,7 +1147,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1161,7 +1161,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1175,7 +1175,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1189,7 +1189,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1203,7 +1203,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1217,7 +1217,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1231,7 +1231,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1245,7 +1245,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1259,7 +1259,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1329,7 +1329,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1343,7 +1343,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1357,7 +1357,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1371,7 +1371,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1385,7 +1385,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1399,7 +1399,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1413,7 +1413,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1427,7 +1427,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1441,7 +1441,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1455,7 +1455,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1749,7 +1749,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1763,7 +1763,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1777,7 +1777,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1791,7 +1791,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1805,7 +1805,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1819,7 +1819,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1833,7 +1833,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1847,7 +1847,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1861,7 +1861,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1875,7 +1875,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1889,7 +1889,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1903,7 +1903,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1917,7 +1917,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1931,7 +1931,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1945,7 +1945,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1959,7 +1959,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1973,7 +1973,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -1987,7 +1987,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2001,7 +2001,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2015,7 +2015,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2029,7 +2029,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2043,7 +2043,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2057,7 +2057,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2071,7 +2071,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2085,7 +2085,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2099,7 +2099,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2113,7 +2113,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2127,7 +2127,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2141,7 +2141,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2155,7 +2155,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2169,7 +2169,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2183,7 +2183,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2197,7 +2197,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2211,7 +2211,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2225,7 +2225,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2239,7 +2239,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2253,7 +2253,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2267,7 +2267,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2281,7 +2281,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2295,7 +2295,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2309,7 +2309,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2323,7 +2323,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2337,7 +2337,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2351,7 +2351,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2365,7 +2365,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2379,7 +2379,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2393,7 +2393,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2407,7 +2407,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2421,7 +2421,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2435,7 +2435,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2449,7 +2449,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2463,7 +2463,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2477,7 +2477,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2491,7 +2491,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2505,7 +2505,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2519,7 +2519,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2533,7 +2533,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2547,7 +2547,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2561,7 +2561,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2575,7 +2575,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2589,7 +2589,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2603,7 +2603,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2617,7 +2617,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2631,7 +2631,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2645,7 +2645,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2659,7 +2659,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2673,7 +2673,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2687,7 +2687,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2701,7 +2701,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2715,7 +2715,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2729,7 +2729,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2743,7 +2743,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2757,7 +2757,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2771,7 +2771,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2785,7 +2785,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2799,7 +2799,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2813,7 +2813,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2827,7 +2827,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2841,7 +2841,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2855,7 +2855,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2869,7 +2869,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2883,7 +2883,7 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -2897,7 +2897,77 @@
       "evidence": "official-page",
       "reviewRequired": true,
       "firstSeen": "2026-10-15T05:10:07.049525+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
+      "changedAt": ""
+    },
+    {
+      "id": "def9dc9711ddf6fa65b8",
+      "agencyId": "ombudsman-academic-2569",
+      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
+      "title": "หน้าแรก สมัครสอบ ตรวจสถานะการสมัครสอบ พิมพ์ใบสมัคร สารพันปัญหา ตรวจสอบคุณวุฒิตามที่ ก.พ. รับรอง",
+      "url": "https://ombudsman.thaijobjob.com/202606/index.php",
+      "document": "",
+      "published": "",
+      "evidence": "official-page",
+      "reviewRequired": true,
+      "firstSeen": "2026-10-15T05:08:32.914700+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
+      "changedAt": ""
+    },
+    {
+      "id": "b67fd3e94cfc940122b3",
+      "agencyId": "ombudsman-academic-2569",
+      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
+      "title": "หน้าแรก สมัครสอบ ตรวจสถานะการสมัครสอบ พิมพ์ใบสมัคร สารพันปัญหา ตรวจสอบคุณวุฒิตามที่ ก.พ. รับรอง",
+      "url": "https://ombudsman.thaijobjob.com/202606/rule.php",
+      "document": "",
+      "published": "",
+      "evidence": "official-page",
+      "reviewRequired": true,
+      "firstSeen": "2026-10-15T05:08:32.914700+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
+      "changedAt": ""
+    },
+    {
+      "id": "ae94c04cdf4c0353de49",
+      "agencyId": "ombudsman-academic-2569",
+      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
+      "title": "ตรวจสถานะการสมัครสอบ",
+      "url": "https://ombudsman.thaijobjob.com/202606/search.php",
+      "document": "",
+      "published": "",
+      "evidence": "official-page",
+      "reviewRequired": true,
+      "firstSeen": "2026-10-15T05:08:32.914700+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
+      "changedAt": ""
+    },
+    {
+      "id": "8604066b7c6c67455457",
+      "agencyId": "ombudsman-academic-2569",
+      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
+      "title": "หน้าแรก สมัครสอบ ตรวจสถานะการสมัครสอบ พิมพ์ใบสมัคร สารพันปัญหา ตรวจสอบคุณวุฒิตามที่ ก.พ. รับรอง",
+      "url": "https://ombudsman.thaijobjob.com/202606/searchA.php",
+      "document": "",
+      "published": "",
+      "evidence": "official-page",
+      "reviewRequired": true,
+      "firstSeen": "2026-10-15T05:08:32.914700+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
+      "changedAt": ""
+    },
+    {
+      "id": "2869bfe0a2638169b63a",
+      "agencyId": "ombudsman-academic-2569",
+      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
+      "title": "หน้าแรก สมัครสอบ ตรวจสถานะการสมัครสอบ พิมพ์ใบสมัคร สารพันปัญหา ตรวจสอบคุณวุฒิตามที่ ก.พ. รับรอง",
+      "url": "https://ombudsman.thaijobjob.com/202606/problem.php",
+      "document": "",
+      "published": "",
+      "evidence": "official-page",
+      "reviewRequired": true,
+      "firstSeen": "2026-10-15T05:08:32.914700+00:00",
+      "lastSeen": "2026-10-30T07:18:44.126325+00:00",
       "changedAt": ""
     },
     {
@@ -3494,76 +3564,6 @@
       "agency": "สำนักงานปลัดกระทรวงการอุดมศึกษา วิทยาศาสตร์ วิจัยและนวัตกรรม",
       "title": "08 Jul ประกาศคณะกรรมการกลั่นกรองเพื่อพิจารณาผู้ที่สมควรขึ้นบัญชีรายชื่อผู้ผ่านการกลั่นกรอง ของกระทรวงการอุดมศึกษา วิทยาศาสตร์ วิจัยและนวัตกรรม เรื่อง การขึ้นบัญชีรายชื่อผู้ผ่านการกลั่นกรองให้ดำรงตำแหน่งประเภ ... ดาวน์โหลด",
       "url": "https://www.ops.go.th/th/all-announcement/a-personnel-announcement/182-personnel-news-govofficial/14871-2026-07-08-02-26-07",
-      "document": "",
-      "published": "",
-      "evidence": "official-page",
-      "reviewRequired": true,
-      "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
-      "changedAt": ""
-    },
-    {
-      "id": "def9dc9711ddf6fa65b8",
-      "agencyId": "ombudsman-academic-2569",
-      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
-      "title": "หน้าแรก สมัครสอบ ตรวจสถานะการสมัครสอบ พิมพ์ใบสมัคร สารพันปัญหา ตรวจสอบคุณวุฒิตามที่ ก.พ. รับรอง",
-      "url": "https://ombudsman.thaijobjob.com/202606/index.php",
-      "document": "",
-      "published": "",
-      "evidence": "official-page",
-      "reviewRequired": true,
-      "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
-      "changedAt": ""
-    },
-    {
-      "id": "b67fd3e94cfc940122b3",
-      "agencyId": "ombudsman-academic-2569",
-      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
-      "title": "หน้าแรก สมัครสอบ ตรวจสถานะการสมัครสอบ พิมพ์ใบสมัคร สารพันปัญหา ตรวจสอบคุณวุฒิตามที่ ก.พ. รับรอง",
-      "url": "https://ombudsman.thaijobjob.com/202606/rule.php",
-      "document": "",
-      "published": "",
-      "evidence": "official-page",
-      "reviewRequired": true,
-      "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
-      "changedAt": ""
-    },
-    {
-      "id": "ae94c04cdf4c0353de49",
-      "agencyId": "ombudsman-academic-2569",
-      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
-      "title": "ตรวจสถานะการสมัครสอบ",
-      "url": "https://ombudsman.thaijobjob.com/202606/search.php",
-      "document": "",
-      "published": "",
-      "evidence": "official-page",
-      "reviewRequired": true,
-      "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
-      "changedAt": ""
-    },
-    {
-      "id": "8604066b7c6c67455457",
-      "agencyId": "ombudsman-academic-2569",
-      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
-      "title": "หน้าแรก สมัครสอบ ตรวจสถานะการสมัครสอบ พิมพ์ใบสมัคร สารพันปัญหา ตรวจสอบคุณวุฒิตามที่ ก.พ. รับรอง",
-      "url": "https://ombudsman.thaijobjob.com/202606/searchA.php",
-      "document": "",
-      "published": "",
-      "evidence": "official-page",
-      "reviewRequired": true,
-      "firstSeen": "2026-10-15T05:08:32.914700+00:00",
-      "lastSeen": "2026-10-15T13:15:28.213996+00:00",
-      "changedAt": ""
-    },
-    {
-      "id": "2869bfe0a2638169b63a",
-      "agencyId": "ombudsman-academic-2569",
-      "agency": "สำนักงานผู้ตรวจการแผ่นดิน",
-      "title": "หน้าแรก สมัครสอบ ตรวจสถานะการสมัครสอบ พิมพ์ใบสมัคร สารพันปัญหา ตรวจสอบคุณวุฒิตามที่ ก.พ. รับรอง",
-      "url": "https://ombudsman.thaijobjob.com/202606/problem.php",
       "document": "",
       "published": "",
       "evidence": "official-page",

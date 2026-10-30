@@ -4,7 +4,7 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '*/10 * * * *' # Fast 10-minute check for waiting agencies
 permissions:
   contents: read
   pages: write
@@ -37,7 +37,7 @@ jobs:
         env:
           SITE_MONITOR_URL: https://exam-path-personal-2026-r.rat-creative1.chatgpt.site/api/official-source
           SITE_MONITOR_ACCESS: ${{ secrets.SITE_MONITOR_ACCESS }}
-        run: python scripts/refresh.py
+        run: python scripts/refresh.py --waiting-only
       - name: Install browser test runtime
         run: npm install --no-save --ignore-scripts playwright@1.62.1
       - name: Install test browser

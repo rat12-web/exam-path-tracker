@@ -171,6 +171,10 @@ def refresh():
  except (OSError,ValueError):previous={'sources':[],'items':[]}
  sources=json.loads((ROOT/'public/data/accounts.json').read_text(encoding='utf-8-sig'))['records']
  sources=[r for r in sources if not r.get('archived')]
+ waiting_only='--waiting-only' in sys.argv or os.environ.get('REFRESH_WAITING_ONLY')=='true'
+ if waiting_only:
+  waiting_keywords=re.compile(r'รอผล|รอสอบ|รอกำหนด')
+  sources=[r for r in sources if r.get('status') in ('รอผลสอบ','รอสอบภาค ข','รอกำหนดการ','รอสอบ') or waiting_keywords.search(r.get('status','')) or r.get('called') is None]
  old_items={i['id']:i for i in previous.get('items',[])};statuses=[];found=[]
  with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
   futures=[pool.submit(fetch,s,now,previous) for s in sources]
@@ -186,7 +190,10 @@ def refresh():
  retained=[i for i in previous.get('items',[]) if i['id'] not in found_ids]
  all_items=found+retained
  all_items.sort(key=lambda i:(i.get('published',''),i.get('firstSeen','')),reverse=True)
- result={'schemaVersion':1,'checkedAt':now,'schedule':'every 1 hour','sources':statuses,'items':all_items[:400],'rankUpdates':[],'note':'Automatic announcement discovery only. Appointment ranks require human verification.'}
+ prev_source_map={s['id']:s for s in previous.get('sources',[])}
+ for st in statuses:prev_source_map[st['id']]=st
+ merged_statuses=list(prev_source_map.values())
+ result={'schemaVersion':1,'checkedAt':now,'schedule':'every 10 minutes (waiting agencies)' if waiting_only else 'every 1 hour','sources':merged_statuses,'items':all_items[:400],'rankUpdates':[],'note':'Automatic announcement discovery only. Appointment ranks require human verification.'}
  destination.parent.mkdir(parents=True,exist_ok=True);temp=destination.with_suffix('.tmp');temp.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8');temp.replace(destination)
  ok=sum(s['status']=='ok' for s in statuses)
  print(f'Checked {len(statuses)} sources; {ok} readable; {len(found)} announcements. No personal records modified.')
