@@ -79,4 +79,21 @@ class NotifyLine(unittest.TestCase):
   self.assertIn('ประกาศเรียกตัว / รายงานตัวล่าสุด', digest_text)
   self.assertIn('เป้าหมาย: ประกาศผลภายในเดือนตุลาคม 2569', digest_text)
 
+
+ def test_candidate_found_in_pdf(self):
+  import unittest.mock as mock
+  from notify_line import CANDIDATE_PATTERN
+  with mock.patch('notify_line.resolve_pdf_url', return_value='https://example.com/test.pdf'):
+   with mock.patch('notify_line.search_candidate_in_pdf', return_value={'found':True,'page':3,'totalPages':15,'rank':8,'seat':'67010045','line':'8  67010045  นายนนทวัฒน์  เพ็ญรัตน์'}):
+    result_item={'id':'res-1','agencyId':'a','agency':'Agency','title':'ประกาศผลการสอบแข่งขันและการขึ้นบัญชีผู้สอบแข่งขันได้','url':self.record['source'],'document':'result.pdf','evidence':'official-page','firstSeen':'2026-10-30'}
+    feed={'sources':[{'id':'a','status':'ok'}],'items':[result_item]}
+    events,_,_=plan(feed,[self.record],{})
+    self.assertEqual(len(events),1)
+    text=events[0]['text']
+    self.assertIn('พบชื่อของคุณ',text)
+    self.assertIn('นายนนทวัฒน์ เพ็ญรัตน์',text)
+    self.assertIn('ลำดับที่: 8',text)
+    self.assertIn('67010045',text)
+    self.assertIn('หน้าที่ 3 จาก 15',text)
+
 if __name__=='__main__':unittest.main()

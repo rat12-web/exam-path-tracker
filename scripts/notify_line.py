@@ -3,7 +3,7 @@
 Secrets come only from runner environment variables. No broadcast or webhook.
 """
 from __future__ import annotations
-import hashlib,json,os,re,sys,time,uuid
+import hashlib,json,os,re,ssl,sys,time,uuid
 from datetime import datetime,timezone,timedelta
 from pathlib import Path
 from urllib.error import HTTPError,URLError
@@ -17,6 +17,61 @@ IMPORTANT=re.compile(r'ขึ้นบัญชี|ยกเลิกบัญ�
 CALLING_PATTERN=re.compile(r'เรียก(?:ตัว|บรรจุ|รายงานตัว|เพิ่มเติม|ผู้สอบ|ผู้มีสิทธิ)|หนังสือเรียกตัว|การเรียกตัว|การเรียกรายงานตัว|การเรียกบรรจุ')
 EXCLUDE_RECRUIT_PATTERN=re.compile(r'รับสมัครสอบ|รายชื่อผู้สมัคร|กำหนดวัน.*สถานที่สอบ|แก้ไขรายชื่อ')
 TZ_BANGKOK=timezone(timedelta(hours=7))
+CANDIDATE_NAME=os.environ.get('LINE_CANDIDATE_NAME','นายนนทวัฒน์ เพ็ญรัตน์')
+CANDIDATE_PATTERN=re.compile(r'(?:นาย\s*)?นนทวัฒน์\s+เพ็ญรัตน์')
+
+def resolve_pdf_url(item):
+ """Resolve direct or presigned S3 download URL for an announcement PDF."""
+ url=item.get('url','')
+ doc=item.get('document','')
+ if not doc and not url.endswith('.pdf'):return None
+ if url.endswith('.pdf') or 's3gw.inet.co.th' in url:return url
+ if 'thaijobjob.com' in url and doc:
+  m=re.match(r'(https?://[^/]+/\d+/)',url)
+  if m:
+   base_url=m.group(1);api=base_url+'api/getFileS3.php'
+   host_agency=re.search(r'https?://([^.]+)\.thaijobjob\.com',url)
+   agency_folder=host_agency.group(1) if host_agency else item.get('agencyId','')
+   campaign_id=re.search(r'/(\d+)/',url).group(1)
+   s3_path=f"news/{agency_folder}/{campaign_id}/{doc}"
+   try:
+    payload=json.dumps({'path':s3_path,'bucket':'report'}).encode('utf-8')
+    req=Request(api,data=payload,headers={'Content-Type':'application/json','User-Agent':'Mozilla/5.0'})
+    ctx=ssl.create_default_context();ctx.check_hostname=False;ctx.verify_mode=ssl.CERT_NONE
+    with urlopen(req,context=ctx,timeout=8) as resp:
+     data=json.loads(resp.read().decode('utf-8'))
+     if data.get('result'):return data['result']
+   except Exception:pass
+ return None
+
+def search_candidate_in_pdf(pdf_url,candidate_pattern=CANDIDATE_PATTERN):
+ """Download PDF bytes and search for candidate name, returning rank and seat details if found."""
+ try:
+  import pypdf,io
+  ctx=ssl.create_default_context();ctx.check_hostname=False;ctx.verify_mode=ssl.CERT_NONE
+  req=Request(pdf_url,headers={'User-Agent':'Mozilla/5.0'})
+  with urlopen(req,context=ctx,timeout=20) as resp:
+   pdf_bytes=resp.read()
+  reader=pypdf.PdfReader(io.BytesIO(pdf_bytes))
+  total_pages=len(reader.pages);has_text=False
+  for idx,page in enumerate(reader.pages):
+   text=page.extract_text() or ''
+   if text.strip():has_text=True
+   if candidate_pattern.search(text):
+    for line in text.split('\n'):
+     if candidate_pattern.search(line):
+      m_start=re.match(r"^\s*(\d{1,4})\s+(?:(\d{5,12})\s+)?",line)
+      m_rank=re.search(r"ลำดับ(?:ที่)?\s*[:.]?\s*(\d{1,4})",line)
+      rank=m_rank.group(1) if m_rank else (m_start.group(1) if m_start else None)
+      seat=m_start.group(2) if (m_start and m_start.group(2)) else None
+      if not seat:
+       m_seat=re.search(r"เลข(?:ประจำตัว)?สอบ\s*[:.]?\s*(\d{5,12})",line)
+       seat=m_seat.group(1) if m_seat else None
+      return {'found':True,'page':idx+1,'totalPages':total_pages,'line':line.strip(),'rank':int(rank) if rank and rank.isdigit() else rank,'seat':seat}
+  return {'found':False,'hasText':has_text,'totalPages':total_pages}
+ except Exception as e:
+  return {'found':False,'error':str(e)}
+
 
 def digest(value):
  return hashlib.sha256(json.dumps(value,ensure_ascii=False,sort_keys=True).encode()).hexdigest()
@@ -49,12 +104,34 @@ def plan(feed,records,state):
   if seen.get(id)==value:continue
   if relevant(item,record,record['id'] in healthy):
    is_calling = bool(CALLING_PATTERN.search(item.get('title','')) and not EXCLUDE_RECRUIT_PATTERN.search(item.get('title','')))
-   header = '🚨 พบประกาศเรียกตัว / รายงานตัว!' if is_calling else '📢 อัปเดตประกาศใหม่'
+   is_result = bool(re.search(r'ขึ้นบัญชี|รายชื่อ|ผู้สอบ|ผลการสอบ|บรรจุ|เรียก', item.get('title','')))
    clean_title = re.sub(r'^คลิกที่นี่เพื่ออ่าน\s*', '', item.get('title',''))[:280]
-   text = (f'{header}\n{record["agency"]}\n{clean_title}\n'
-    + (f'เอกสาร: {item["document"]}\n' if item.get('document') else '')
-    + 'รอตรวจตำแหน่งและปีบัญชี ยังไม่ยืนยันลำดับเรียกใหม่\n'
-    + f'{item["url"]}\nดูบัญชี: {PAGE}')
+   candidate_info = None
+   pdf_url = resolve_pdf_url(item)
+   if pdf_url and (is_result or is_calling):
+    candidate_info = search_candidate_in_pdf(pdf_url)
+
+   if candidate_info and candidate_info.get('found'):
+    header = '🎯 ประกาศผลสอบ / พบชื่อของคุณ!'
+    rank_str = f"🏅 ลำดับที่: {candidate_info['rank']}" if candidate_info.get('rank') else "🏅 มีรายชื่อผ่านการคัดเลือก"
+    seat_str = f"🎫 เลขประจำตัวสอบ: {candidate_info['seat']}" if candidate_info.get('seat') else ""
+    page_str = f"📄 หน้าที่ {candidate_info['page']} จาก {candidate_info['totalPages']} หน้า"
+    details = '\n'.join([s for s in [f"👤 {CANDIDATE_NAME}", rank_str, seat_str, page_str] if s])
+    text = (f'{header}\n{record["agency"]}\n{clean_title}\n\n'
+     + f'{details}\n'
+     + (f'เปิดอ่าน PDF ฉบับเต็ม:\n{pdf_url}\n' if pdf_url else '')
+     + f'ดูบัญชีของฉัน: {PAGE}')
+   else:
+    header = '🚨 พบประกาศเรียกตัว / รายงานตัว!' if is_calling else '📢 อัปเดตประกาศใหม่'
+    scan_note = ''
+    if candidate_info and not candidate_info.get('hasText', True):
+     scan_note = '📄 ไฟล์เป็นเอกสารสแกนภาพ (กรุณาเปิดตรวจรายชื่อใน PDF ด้วยตนเอง)\n'
+    text = (f'{header}\n{record["agency"]}\n{clean_title}\n'
+     + (f'เอกสาร: {item["document"]}\n' if item.get('document') else '')
+     + scan_note
+     + 'รอตรวจตำแหน่งและปีบัญชี ยังไม่ยืนยันลำดับเรียกใหม่\n'
+     + (f'{pdf_url}\n' if pdf_url else f'{item["url"]}\n')
+     + f'ดูบัญชี: {PAGE}')
    events.append({'key':'news:'+id+':'+value,'text':text,'seen':{id:value}})
   else:seen[id]=value
  for id,record in active.items():
